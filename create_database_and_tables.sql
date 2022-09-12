@@ -1,5 +1,5 @@
 -- Create database
-create database labs_db;
+create database if not exists labs_db;
 
 -- Use database
 use labs_db;
@@ -87,7 +87,7 @@ CREATE TABLE patient (
 CREATE TABLE patient_diagnosis (
     patient_id int NOT NULL,
     diagnosis_name varchar(90) NOT NULL,
-    CONSTRAINT patient_diagnosis_pk PRIMARY KEY (patient_id)
+    CONSTRAINT patient_diagnosis_pk PRIMARY KEY (patient_id,diagnosis_name)
 );
 
 -- Table: patient_medicine
