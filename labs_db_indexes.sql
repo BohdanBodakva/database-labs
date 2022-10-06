@@ -7,190 +7,190 @@ use labs_db;
 
 
 -- Drop tables if exist
-DROP TABLE IF EXISTS patient_medicine;
-DROP TABLE IF EXISTS patient_diagnosis;
-DROP TABLE IF EXISTS doctor_position;
-DROP TABLE IF EXISTS consultation;
-DROP TABLE IF EXISTS patient;
-DROP TABLE IF EXISTS doctor;
-DROP TABLE IF EXISTS hospital;
-DROP TABLE IF EXISTS city;
-DROP TABLE IF EXISTS medicine;
-DROP TABLE IF EXISTS diagnosis;
-DROP TABLE IF EXISTS region;
-DROP TABLE IF EXISTS work_position;
-DROP TABLE IF EXISTS `data`;
+drop table if exists patient_medicine;
+drop table if exists patient_diagnosis;
+drop table if exists doctor_position;
+drop table if exists consultation;
+drop table if exists patient;
+drop table if exists doctor;
+drop table if exists hospital;
+drop table if exists city;
+drop table if exists medicine;
+drop table if exists diagnosis;
+drop table if exists region;
+drop table if exists work_position;
+drop table if exists `data`;
 
 
 
 -- Create Tables
 -- Table: city
-CREATE TABLE city (
-    `name` varchar(70) NOT NULL,
-    region_name varchar(70) NOT NULL,
-    CONSTRAINT city_pk PRIMARY KEY (`name`)
+create table city (
+    `name` varchar(70) not null,
+    region_name varchar(70) not null,
+    constraint city_pk primary key (`name`)
 );
 
 -- Table: consultation
-CREATE TABLE consultation (
-    patient_id int NOT NULL,
-    doctor_id int NOT NULL,
-    `date` date NOT NULL,
-    conclusion text NOT NULL,
-    CONSTRAINT consultation_pk PRIMARY KEY (patient_id,doctor_id,`date`)
+create table consultation (
+    patient_id int not null,
+    doctor_id int not null,
+    `date` date not null,
+    conclusion text not null,
+    constraint consultation_pk primary key (patient_id,doctor_id,`date`)
 );
 
 -- Table: data
-CREATE TABLE `data` (
+create table `data` (
     id int NOT NULL auto_increment,
-    temperature_in_celsius float NOT NULL,
-    systolic_pressure int NOT NULL,
-    diastolic_pressure int NOT NULL,
-    heart_rate_in_minute int NOT NULL,
-    special_notes text NULL,
-    CONSTRAINT data_pk PRIMARY KEY (id)
+    temperature_in_celsius float not null,
+    systolic_pressure int not null,
+    diastolic_pressure int not null,
+    heart_rate_in_minute int not null,
+    special_notes text,
+    constraint data_pk primary key (id)
 );
 
 -- Table: diagnosis
-CREATE TABLE diagnosis (
-    `name` varchar(90) NOT NULL,
-    CONSTRAINT diagnosis_pk PRIMARY KEY (`name`)
+create table diagnosis (
+    `name` varchar(90) not null,
+    constraint diagnosis_pk primary key (`name`)
 );
 
 -- Table: doctor
-CREATE TABLE doctor (
+create table doctor (
     id int NOT NULL auto_increment,
-    surname varchar(50) NOT NULL,
-    `name` varchar(50) NOT NULL,
-    previous_experience_in_years int NOT NULL,
-    hire_date date NOT NULL,
-    hospital_id int NOT NULL,
-    salary_in_hrn int NOT NULL,
-    CONSTRAINT doctor_pk PRIMARY KEY (id)
+    surname varchar(50) not null,
+    `name` varchar(50) not null,
+    previous_experience_in_years int not null,
+    hire_date date not null,
+    hospital_id int not null,
+    salary_in_hrn int not null,
+    constraint doctor_pk primary key (id)
 );
 
 -- Table: doctor_position
-CREATE TABLE doctor_position (
-    doctor_id int NOT NULL,
-    position_name varchar(90) NOT NULL,
-    CONSTRAINT doctor_position_pk PRIMARY KEY (doctor_id,position_name)
+create table doctor_position (
+    doctor_id int not null,
+    position_name varchar(90) not null,
+    constraint doctor_position_pk primary key (doctor_id,position_name)
 );
 
 -- Table: hospital
-CREATE TABLE hospital (
+create table hospital (
     id int NOT NULL auto_increment,
-    `name` varchar(100) NOT NULL,
-    address varchar(100) NOT NULL,
-    city_name varchar(70) NOT NULL,
-    CONSTRAINT hospital_pk PRIMARY KEY (id)
+    `name` varchar(100) not null,
+    address varchar(100) not null,
+    city_name varchar(70) not null,
+    constraint hospital_pk primary key (id)
 );
 
 -- Table: medicine
-CREATE TABLE medicine (
-    `name` varchar(100) NOT NULL,
-    CONSTRAINT medicine_pk PRIMARY KEY (`name`)
+create table medicine (
+    `name` varchar(100) not null,
+    constraint medicine_pk primary key (`name`)
 );
 
 -- Table: patient
-CREATE TABLE patient (
+create table patient (
     id int NOT NULL auto_increment,
-    surname varchar(50) NOT NULL,
-    `name` varchar(50) NOT NULL,
-    registration_date date NOT NULL,
-    data_id int NOT NULL,
-    hospital_id int NOT NULL,
-    CONSTRAINT patient_pk PRIMARY KEY (id)
+    surname varchar(50) not null,
+    `name` varchar(50) not null,
+    registration_date date not null,
+    data_id int not null,
+    hospital_id int not null,
+    constraint patient_pk primary key (id)
 );
 
 -- Table: patient_diagnosis
-CREATE TABLE patient_diagnosis (
-    patient_id int NOT NULL,
-    diagnosis_name varchar(90) NOT NULL,
-    CONSTRAINT patient_diagnosis_pk PRIMARY KEY (patient_id,diagnosis_name)
+create table patient_diagnosis (
+    patient_id int not null,
+    diagnosis_name varchar(90) not null,
+    constraint patient_diagnosis_pk primary key (patient_id,diagnosis_name)
 );
 
 -- Table: patient_medicine
-CREATE TABLE patient_medicine (
-    patient_id int NOT NULL,
-    medicine_name varchar(100) NOT NULL,
-    special_notes text NULL,
-    CONSTRAINT patient_medicine_pk PRIMARY KEY (patient_id,medicine_name)
+create table patient_medicine (
+    patient_id int not null,
+    medicine_name varchar(100) not null,
+    special_notes text,
+    constraint patient_medicine_pk primary key (patient_id,medicine_name)
 );
 
 -- Table: region
-CREATE TABLE region (
-    `name` varchar(70) NOT NULL,
-    CONSTRAINT region_pk PRIMARY KEY (`name`)
+create table region (
+    `name` varchar(70) not null,
+    constraint region_pk primary key (`name`)
 );
 
 -- Table: work_position
-CREATE TABLE work_position (
-    `name` varchar(90) NOT NULL,
-    CONSTRAINT work_position_pk PRIMARY KEY (`name`)
+create table work_position (
+    `name` varchar(90) not null,
+    constraint work_position_pk primary key (`name`)
 );
 
 
 
 -- Add foreign keys
 -- Reference: city_region (table: city)
-ALTER TABLE city ADD CONSTRAINT city_region FOREIGN KEY city_region (region_name)
-    REFERENCES region (`name`) ON DELETE CASCADE;
+alter table city add constraint city_region foreign key city_region (region_name)
+    references region (`name`);
 
 -- Reference: consultation_doctor (table: consultation)
-ALTER TABLE consultation ADD CONSTRAINT consultation_doctor FOREIGN KEY consultation_doctor (doctor_id)
-    REFERENCES doctor (id) ON DELETE CASCADE;
+alter table consultation add constraint consultation_doctor foreign key consultation_doctor (doctor_id)
+    references doctor (id);
 
 -- Reference: consultation_patient (table: consultation)
-ALTER TABLE consultation ADD CONSTRAINT consultation_patient FOREIGN KEY consultation_patient (patient_id)
-    REFERENCES patient (id) ON DELETE CASCADE;
+alter table consultation add constraint consultation_patient foreign key consultation_patient (patient_id)
+    references patient (id);
 
 -- Reference: doctor_hospital (table: doctor)
-ALTER TABLE doctor ADD CONSTRAINT doctor_hospital FOREIGN KEY doctor_hospital (hospital_id)
-    REFERENCES hospital (id) ON DELETE CASCADE;
+alter table doctor add constraint doctor_hospital foreign key doctor_hospital (hospital_id)
+    references hospital (id);
 
 -- Reference: doctor_position_doctor (table: doctor_position)
-ALTER TABLE doctor_position ADD CONSTRAINT doctor_position_doctor FOREIGN KEY doctor_position_doctor (doctor_id)
-    REFERENCES doctor (id) ON DELETE CASCADE;
+alter table doctor_position add constraint doctor_position_doctor foreign key doctor_position_doctor (doctor_id)
+    references doctor (id);
 
 -- Reference: doctor_position_position (table: doctor_position)
-ALTER TABLE doctor_position ADD CONSTRAINT doctor_position_position FOREIGN KEY doctor_position_position (position_name)
-    REFERENCES work_position (name) ON DELETE CASCADE;
+alter table doctor_position add constraint doctor_position_position foreign key doctor_position_position (position_name)
+    references work_position (name);
 
 -- Reference: hospital_city (table: hospital)
-ALTER TABLE hospital ADD CONSTRAINT hospital_city FOREIGN KEY hospital_city (city_name)
-    REFERENCES city (`name`) ON DELETE CASCADE;
+alter table hospital add constraint hospital_city foreign key hospital_city (city_name)
+    references city (`name`);
 
 -- Reference: patient_data (table: patient)
-ALTER TABLE patient ADD CONSTRAINT patient_data FOREIGN KEY patient_data (data_id)
-    REFERENCES `data` (id) ON DELETE CASCADE;
+alter table patient add constraint patient_data foreign key patient_data (data_id)
+    references `data` (id);
 
 -- Reference: patient_diagnosis_diagnosis (table: patient_diagnosis)
-ALTER TABLE patient_diagnosis ADD CONSTRAINT patient_diagnosis_diagnosis FOREIGN KEY patient_diagnosis_diagnosis (diagnosis_name)
-    REFERENCES diagnosis (`name`) ON DELETE CASCADE;
+alter table patient_diagnosis add constraint patient_diagnosis_diagnosis foreign key patient_diagnosis_diagnosis (diagnosis_name)
+    references diagnosis (`name`);
 
 -- Reference: patient_diagnosis_patient (table: patient_diagnosis)
-ALTER TABLE patient_diagnosis ADD CONSTRAINT patient_diagnosis_patient FOREIGN KEY patient_diagnosis_patient (patient_id)
-    REFERENCES patient (id) ON DELETE CASCADE;
+alter table patient_diagnosis add constraint patient_diagnosis_patient foreign key patient_diagnosis_patient (patient_id)
+    references patient (id);
 
 -- Reference: patient_hospital (table: patient)
-ALTER TABLE patient ADD CONSTRAINT patient_hospital FOREIGN KEY patient_hospital (hospital_id)
-    REFERENCES hospital (id) ON DELETE CASCADE;
+alter table patient add constraint patient_hospital foreign key patient_hospital (hospital_id)
+    references hospital (id);
 
 -- Reference: patient_medicine_medicine (table: patient_medicine)
-ALTER TABLE patient_medicine ADD CONSTRAINT patient_medicine_medicine FOREIGN KEY patient_medicine_medicine (medicine_name)
-    REFERENCES medicine (`name`) ON DELETE CASCADE;
+alter table patient_medicine add constraint patient_medicine_medicine foreign key patient_medicine_medicine (medicine_name)
+    references medicine (`name`);
 
 -- Reference: patient_medicine_patient (table: patient_medicine)
-ALTER TABLE patient_medicine ADD CONSTRAINT patient_medicine_patient FOREIGN KEY patient_medicine_patient (patient_id)
-    REFERENCES patient (id) ON DELETE CASCADE;           
+alter table patient_medicine add constraint patient_medicine_patient foreign key patient_medicine_patient (patient_id)
+    references patient (id);           
     
     
     
 -- Create indexes  
-CREATE INDEX city_name_idx ON city(`name`);   
-CREATE INDEX hospital_name_idx ON hospital(`name`); 
-CREATE INDEX patient_surname_name_idx ON patient(surname,`name`);  
-CREATE INDEX doctor_surname_name_idx ON doctor(surname,`name`);        
+create index city_name_idx on city(`name`);   
+create index hospital_name_idx on hospital(`name`); 
+create index patient_surname_idx on patient(surname);  
+create index doctor_surname_idx on doctor(surname);        
     
     
     
