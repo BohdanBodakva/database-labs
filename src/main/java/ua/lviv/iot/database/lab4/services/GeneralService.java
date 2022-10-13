@@ -8,9 +8,9 @@ public interface GeneralService<T, ID> {
 
     T findById(ID id);
 
-    int create(T entity);
+    String create(T entity);
 
-    int update(ID id, T entity);
+    String update(ID id, T entity);
 
-    int delete(ID id);
+    String delete(ID id);
 }

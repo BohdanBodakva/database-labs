@@ -19,7 +19,7 @@ public class Lab4Application implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		view.da("penicillin", new Medicine("agropyron1"));
+		view.da("ko");
 	}
 
 }

@@ -9,6 +9,6 @@ import lombok.NoArgsConstructor;
 @Data
 public class PatientMedicine {
     private Integer patientId;
-    private Integer medicineId;
+    private String medicineId;
     private String specialNotes;
 }

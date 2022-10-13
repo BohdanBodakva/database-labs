@@ -8,7 +8,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 import ua.lviv.iot.database.lab4.dao.MedicineDao;
-import ua.lviv.iot.database.lab4.exceptions.ItemNotExistException;
 import ua.lviv.iot.database.lab4.models.Medicine;
 
 import java.util.List;
@@ -51,18 +50,30 @@ public class MedicineDaoImpl implements MedicineDao {
     }
 
     @Override
-    public int create(Medicine medicine) {
-        return jdbcTemplate.update(CREATE, medicine.getName());
+    public String create(Medicine medicine) {
+        int result = jdbcTemplate.update(CREATE, medicine.getName());
+        if(result == 0){
+            return "Medicine wasn't created";
+        }
+        return "Medicine " + medicine + " was successfully created";
     }
 
     @Override
-    public int update(String s, Medicine medicine) {
-        return jdbcTemplate.update(UPDATE, medicine.getName(), s);
+    public String update(String s, Medicine medicine) {
+        int result = jdbcTemplate.update(UPDATE, medicine.getName(), s);
+        if(result == 0){
+            return "Medicine wasn't updated";
+        }
+        return "Medicine with name=" + s + " was successfully updated";
     }
 
     @Override
-    public int delete(String s) {
-        return jdbcTemplate.update(DELETE, s);
+    public String delete(String s) {
+        int result = jdbcTemplate.update(DELETE, s);
+        if(result == 0){
+            return "Medicine wasn't deleted";
+        }
+        return "Medicine with name=" + s + " was successfully deleted";
     }
 
     @Override

@@ -29,17 +29,17 @@ public class MedicineServiceImpl implements MedicineService {
     }
 
     @Override
-    public int create(Medicine medicine) {
+    public String create(Medicine medicine) {
         return medicineDao.create(medicine);
     }
 
     @Override
-    public int update(String s, Medicine medicine) {
+    public String update(String s, Medicine medicine) {
         return medicineDao.update(s, medicine);
     }
 
     @Override
-    public int delete(String s) {
+    public String delete(String s) {
         return medicineDao.delete(s);
     }
 

@@ -29,17 +29,17 @@ public class MedicineControllerImpl implements MedicineController {
     }
 
     @Override
-    public int create(Medicine medicine) {
+    public String create(Medicine medicine) {
         return medicineService.create(medicine);
     }
 
     @Override
-    public int update(String s, Medicine medicine) {
+    public String update(String s, Medicine medicine) {
         return medicineService.update(s, medicine);
     }
 
     @Override
-    public int delete(String s) {
+    public String delete(String s) {
         return medicineService.delete(s);
     }
 
