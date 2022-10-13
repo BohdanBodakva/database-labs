@@ -1,11 +1,13 @@
 package ua.lviv.iot.database.lab4.dao.implementation;
 
+import org.springframework.stereotype.Repository;
 import ua.lviv.iot.database.lab4.dao.CityDao;
 import ua.lviv.iot.database.lab4.models.City;
 
 import java.util.List;
 import java.util.Optional;
 
+@Repository
 public class CityDaoImpl implements CityDao {
 
     @Override
@@ -24,8 +26,8 @@ public class CityDaoImpl implements CityDao {
     }
 
     @Override
-    public Optional<City> findById(String s) {
-        return Optional.empty();
+    public City findById(String s) {
+        return null;
     }
 
     @Override

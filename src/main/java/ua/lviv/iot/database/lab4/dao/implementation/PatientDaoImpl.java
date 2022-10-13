@@ -1,5 +1,6 @@
 package ua.lviv.iot.database.lab4.dao.implementation;
 
+import org.springframework.stereotype.Repository;
 import ua.lviv.iot.database.lab4.dao.PatientDao;
 import ua.lviv.iot.database.lab4.models.Patient;
 import ua.lviv.iot.database.lab4.models.PatientData;
@@ -7,6 +8,7 @@ import ua.lviv.iot.database.lab4.models.PatientData;
 import java.util.List;
 import java.util.Optional;
 
+@Repository
 public class PatientDaoImpl implements PatientDao {
     @Override
     public List<Patient> findAll() {
@@ -14,8 +16,8 @@ public class PatientDaoImpl implements PatientDao {
     }
 
     @Override
-    public Optional<Patient> findById(String s) {
-        return Optional.empty();
+    public Patient findById(String s) {
+        return null;
     }
 
     @Override

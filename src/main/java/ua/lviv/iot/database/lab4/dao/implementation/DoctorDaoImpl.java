@@ -1,11 +1,13 @@
 package ua.lviv.iot.database.lab4.dao.implementation;
 
+import org.springframework.stereotype.Repository;
 import ua.lviv.iot.database.lab4.dao.DoctorDao;
 import ua.lviv.iot.database.lab4.models.Doctor;
 
 import java.util.List;
 import java.util.Optional;
 
+@Repository
 public class DoctorDaoImpl implements DoctorDao {
     @Override
     public List<Doctor> getAllDoctorsBySurname(String doctorSurname) {
@@ -18,8 +20,8 @@ public class DoctorDaoImpl implements DoctorDao {
     }
 
     @Override
-    public Optional<Doctor> findById(String s) {
-        return Optional.empty();
+    public Doctor findById(String s) {
+        return null;
     }
 
     @Override

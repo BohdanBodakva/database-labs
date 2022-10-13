@@ -1,11 +1,12 @@
 package ua.lviv.iot.database.lab4.dao.implementation;
 
+import org.springframework.stereotype.Repository;
 import ua.lviv.iot.database.lab4.dao.WorkPositionDao;
 import ua.lviv.iot.database.lab4.models.WorkPosition;
 
 import java.util.List;
-import java.util.Optional;
 
+@Repository
 public class WorkPositionDaoImpl implements WorkPositionDao {
     @Override
     public List<WorkPosition> findAll() {
@@ -13,8 +14,8 @@ public class WorkPositionDaoImpl implements WorkPositionDao {
     }
 
     @Override
-    public Optional<WorkPosition> findById(String s) {
-        return Optional.empty();
+    public WorkPosition findById(String s) {
+        return null;
     }
 
     @Override

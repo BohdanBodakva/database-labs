@@ -1,11 +1,13 @@
 package ua.lviv.iot.database.lab4.dao.implementation;
 
+import org.springframework.stereotype.Repository;
 import ua.lviv.iot.database.lab4.models.Diagnosis;
 import ua.lviv.iot.database.lab4.dao.DiagnosisDao;
 
 import java.util.List;
 import java.util.Optional;
 
+@Repository
 public class DiagnosisDaoImpl implements DiagnosisDao {
 
     @Override
@@ -19,8 +21,8 @@ public class DiagnosisDaoImpl implements DiagnosisDao {
     }
 
     @Override
-    public Optional<Diagnosis> findById(String s) {
-        return Optional.empty();
+    public Diagnosis findById(String s) {
+        return null;
     }
 
     @Override

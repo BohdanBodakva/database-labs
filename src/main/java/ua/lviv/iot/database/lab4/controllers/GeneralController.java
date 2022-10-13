@@ -1,9 +1,9 @@
-package ua.lviv.iot.database.lab4.dao;
+package ua.lviv.iot.database.lab4.controllers;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface GeneralDao<T, ID> {
+public interface GeneralController<T, ID> {
     List<T> findAll();
 
     T findById(ID id);

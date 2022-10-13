@@ -1,11 +1,13 @@
 package ua.lviv.iot.database.lab4.dao.implementation;
 
+import org.springframework.stereotype.Repository;
 import ua.lviv.iot.database.lab4.dao.HospitalDao;
 import ua.lviv.iot.database.lab4.models.Hospital;
 
 import java.util.List;
 import java.util.Optional;
 
+@Repository
 public class HospitalDaoImpl implements HospitalDao {
     @Override
     public List<Hospital> findAll() {
@@ -13,8 +15,8 @@ public class HospitalDaoImpl implements HospitalDao {
     }
 
     @Override
-    public Optional<Hospital> findById(String s) {
-        return Optional.empty();
+    public Hospital findById(String s) {
+        return null;
     }
 
     @Override

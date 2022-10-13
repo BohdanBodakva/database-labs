@@ -1,11 +1,13 @@
 package ua.lviv.iot.database.lab4.dao.implementation;
 
+import org.springframework.stereotype.Repository;
 import ua.lviv.iot.database.lab4.dao.RegionDao;
 import ua.lviv.iot.database.lab4.models.Region;
 
 import java.util.List;
 import java.util.Optional;
 
+@Repository
 public class RegionDaoImpl implements RegionDao {
     @Override
     public List<Region> findAll() {
@@ -13,8 +15,8 @@ public class RegionDaoImpl implements RegionDao {
     }
 
     @Override
-    public Optional<Region> findById(String s) {
-        return Optional.empty();
+    public Region findById(String s) {
+        return null;
     }
 
     @Override
