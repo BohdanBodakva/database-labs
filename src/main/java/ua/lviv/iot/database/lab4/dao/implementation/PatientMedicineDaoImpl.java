@@ -7,6 +7,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import ua.lviv.iot.database.lab4.dao.PatientMedicineDao;
 import ua.lviv.iot.database.lab4.models.Medicine;
+import ua.lviv.iot.database.lab4.models.Patient;
 import ua.lviv.iot.database.lab4.models.PatientMedicine;
 
 import java.util.List;
@@ -29,6 +30,10 @@ public class PatientMedicineDaoImpl implements PatientMedicineDao {
                                             "medicine_name=?," +
                                             "special_notes=? where patient_id=? and medicine_name=?";
     private static final String DELETE = "delete from patient_medicine where patient_id=? and medicine_name=?";
+    private static final String FIND_PATIENTS_THAT_TAKE_MEDICINE =
+            "select patient.* from patient " +
+                    "join patient_medicine on patient.id=patient_medicine.patient_id join medicine on medicine.name=patient_medicine.medicine_name " +
+                    "where medicine.name=?";
 
     @Override
     public List<PatientMedicine> findAll() {
@@ -79,5 +84,12 @@ public class PatientMedicineDaoImpl implements PatientMedicineDao {
         }
         return "Patient-Medicine {patient_id=" + patientId +
                 ", medicine_name=" + medicine_name + "} was successfully updated";
+    }
+
+    @Override
+    public List<Patient> patientsThatTakesMedicine(String medicineName) {
+        return jdbcTemplate.query(FIND_PATIENTS_THAT_TAKE_MEDICINE,
+                new BeanPropertyRowMapper<>(Patient.class),
+                medicineName);
     }
 }

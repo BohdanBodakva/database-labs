@@ -28,6 +28,11 @@ public class DoctorControllerImpl implements DoctorController {
     }
 
     @Override
+    public List<Doctor> getAllDoctorsFromHospitalByHospitalId(Integer hospitalId) {
+        return doctorService.getAllDoctorsFromHospitalByHospitalId(hospitalId);
+    }
+
+    @Override
     public List<Doctor> findAll() {
         return doctorService.findAll();
     }

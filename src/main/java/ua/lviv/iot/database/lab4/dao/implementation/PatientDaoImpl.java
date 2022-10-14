@@ -6,20 +6,21 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import ua.lviv.iot.database.lab4.dao.PatientDao;
-import ua.lviv.iot.database.lab4.models.Medicine;
+import ua.lviv.iot.database.lab4.dao.PatientDataDao;
 import ua.lviv.iot.database.lab4.models.Patient;
 import ua.lviv.iot.database.lab4.models.PatientData;
 
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public class PatientDaoImpl implements PatientDao {
     private final JdbcTemplate jdbcTemplate;
+    private final PatientDataDao patientDataDao;
 
     @Autowired
-    public PatientDaoImpl(JdbcTemplate jdbcTemplate) {
+    public PatientDaoImpl(JdbcTemplate jdbcTemplate, PatientDataDao patientDataDao) {
         this.jdbcTemplate = jdbcTemplate;
+        this.patientDataDao = patientDataDao;
     }
 
     private static final String FIND_ALL = "select * from patient";

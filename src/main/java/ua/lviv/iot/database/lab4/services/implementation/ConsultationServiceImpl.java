@@ -41,4 +41,19 @@ public class ConsultationServiceImpl implements ConsultationService {
     public String delete(Integer doctorId, Integer patientId) {
         return consultationDao.delete(doctorId, patientId);
     }
+
+    @Override
+    public List<Consultation> getConsultationsOnDate(String date) {
+        return consultationDao.getConsultationsOnDate(date);
+    }
+
+    @Override
+    public List<Consultation> getAllConsultationsForPatient(Integer patientId) {
+        return consultationDao.getAllConsultationsForPatient(patientId);
+    }
+
+    @Override
+    public List<Consultation> getAllConsultationsForDoctor(Integer doctorId) {
+        return consultationDao.getAllConsultationsForDoctor(doctorId);
+    }
 }

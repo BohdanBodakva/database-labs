@@ -18,7 +18,7 @@ public class CityControllerImpl implements CityController {
     }
 
     @Override
-    public List<City> getAllCitiesFromRegionByRegionId(Integer regionId) {
+    public List<City> getAllCitiesFromRegionByRegionId(String regionId) {
         return cityService.getAllCitiesFromRegionByRegionId(regionId);
     }
 

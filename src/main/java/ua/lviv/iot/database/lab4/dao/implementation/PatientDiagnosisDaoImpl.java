@@ -7,6 +7,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import ua.lviv.iot.database.lab4.dao.PatientDiagnosisDao;
 import ua.lviv.iot.database.lab4.models.Diagnosis;
+import ua.lviv.iot.database.lab4.models.Patient;
 import ua.lviv.iot.database.lab4.models.PatientDiagnosis;
 import ua.lviv.iot.database.lab4.models.PatientMedicine;
 
@@ -29,6 +30,10 @@ public class PatientDiagnosisDaoImpl implements PatientDiagnosisDao {
     private static final String UPDATE = "update patient_diagnosis set patient_id=?," +
             "diagnosis_name=? where patient_id=? and diagnosis_name=?";
     private static final String DELETE = "delete from patient_diagnosis where patient_id=? and diagnosis_name=?";
+    private static final String FIND_PATIENTS_WITH_DIAGNOSIS =
+            "select patient.* from patient " +
+                    "join patient_diagnosis on patient.id=patient_diagnosis.patient_id join diagnosis on diagnosis.name=patient_diagnosis.diagnosis_name " +
+                    "where diagnosis.name=?";
 
     @Override
     public List<PatientDiagnosis> findAll() {
@@ -78,5 +83,12 @@ public class PatientDiagnosisDaoImpl implements PatientDiagnosisDao {
         }
         return "Patient-Diagnosis {patient_id=" + patientId +
                 ", medicine_name=" + diagnosisName + "} was successfully updated";
+    }
+
+    @Override
+    public List<Patient> patientsWithDiagnosis(String diagnosisName) {
+        return jdbcTemplate.query(FIND_PATIENTS_WITH_DIAGNOSIS,
+                new BeanPropertyRowMapper<>(Patient.class),
+                diagnosisName);
     }
 }

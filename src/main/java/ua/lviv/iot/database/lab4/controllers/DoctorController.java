@@ -8,4 +8,5 @@ import java.util.List;
 public interface DoctorController extends GeneralController<Doctor, Integer> {
     List<Doctor> getAllDoctorsBySurname(String doctorSurname);
     List<Doctor> getAllDoctorsWithExperienceMoreThan(Integer experience);
+    List<Doctor> getAllDoctorsFromHospitalByHospitalId(Integer hospitalId);
 }

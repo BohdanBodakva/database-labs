@@ -18,7 +18,7 @@ public class CityServiceImpl implements CityService {
     }
 
     @Override
-    public List<City> getAllCitiesFromRegionByRegionId(Integer regionId) {
+    public List<City> getAllCitiesFromRegionByRegionId(String regionId) {
         return cityDao.getAllCitiesFromRegionByRegionId(regionId);
     }
 

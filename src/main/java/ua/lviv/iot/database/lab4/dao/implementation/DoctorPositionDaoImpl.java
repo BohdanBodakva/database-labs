@@ -6,6 +6,7 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import ua.lviv.iot.database.lab4.dao.DoctorPositionDao;
+import ua.lviv.iot.database.lab4.models.Doctor;
 import ua.lviv.iot.database.lab4.models.DoctorPosition;
 import ua.lviv.iot.database.lab4.models.PatientDiagnosis;
 
@@ -28,6 +29,10 @@ public class DoctorPositionDaoImpl implements DoctorPositionDao {
     private static final String UPDATE = "update doctor_position set doctor_id=?," +
             "position_name=? where doctor_id=? and position_name=?";
     private static final String DELETE = "delete from doctor_position where doctor_id=? and position_name=?";
+    private static final String FIND_DOCTORS_ON_POSITION =
+            "select doctor.* from doctor " +
+                    "join doctor_position on doctor.id=doctor_position.doctor_id join work_position on work_position.name=doctor_position.position_name " +
+                    "where work_position.name=?";
 
     @Override
     public List<DoctorPosition> findAll() {
@@ -77,5 +82,12 @@ public class DoctorPositionDaoImpl implements DoctorPositionDao {
         }
         return "Doctor-Position {doctor_id=" + doctorId +
                 ", position_name=" + positionName + "} was successfully updated";
+    }
+
+    @Override
+    public List<Doctor> doctorsOnPosition(String positionName) {
+        return jdbcTemplate.query(FIND_DOCTORS_ON_POSITION,
+                new BeanPropertyRowMapper<>(Doctor.class),
+                positionName);
     }
 }

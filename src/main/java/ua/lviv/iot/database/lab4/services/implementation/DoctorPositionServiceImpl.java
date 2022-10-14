@@ -3,6 +3,7 @@ package ua.lviv.iot.database.lab4.services.implementation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ua.lviv.iot.database.lab4.dao.DoctorPositionDao;
+import ua.lviv.iot.database.lab4.models.Doctor;
 import ua.lviv.iot.database.lab4.models.DoctorPosition;
 import ua.lviv.iot.database.lab4.services.DoctorPositionService;
 
@@ -41,5 +42,10 @@ public class DoctorPositionServiceImpl implements DoctorPositionService {
     @Override
     public String delete(Integer doctorId, String positionName) {
         return doctorPositionDao.delete(doctorId, positionName);
+    }
+
+    @Override
+    public List<Doctor> doctorsOnPosition(String positionName) {
+        return doctorPositionDao.doctorsOnPosition(positionName);
     }
 }

@@ -41,4 +41,19 @@ public class ConsultationControllerImpl implements ConsultationController {
     public String delete(Integer doctorId, Integer patientId) {
         return consultationService.delete(doctorId, patientId);
     }
+
+    @Override
+    public List<Consultation> getConsultationsOnDate(String date) {
+        return consultationService.getConsultationsOnDate(date);
+    }
+
+    @Override
+    public List<Consultation> getAllConsultationsForPatient(Integer patientId) {
+        return consultationService.getAllConsultationsForPatient(patientId);
+    }
+
+    @Override
+    public List<Consultation> getAllConsultationsForDoctor(Integer doctorId) {
+        return consultationService.getAllConsultationsForDoctor(doctorId);
+    }
 }

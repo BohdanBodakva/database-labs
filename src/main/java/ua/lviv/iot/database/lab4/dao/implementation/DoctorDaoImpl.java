@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import ua.lviv.iot.database.lab4.dao.DoctorDao;
 import ua.lviv.iot.database.lab4.models.Doctor;
 import ua.lviv.iot.database.lab4.models.Medicine;
+import ua.lviv.iot.database.lab4.models.Patient;
 
 import javax.print.Doc;
 import java.util.List;
@@ -40,7 +41,8 @@ public class DoctorDaoImpl implements DoctorDao {
 
     private static final String FIND_ALL_DOCTORS_BY_SURNAME = "select * from doctor where surname like ?";
     private static final String FIND_ALL_DOCTORS_WITH_EXPERIENCE_MORE_THAN =
-                        "select * from doctor where previous_experience_in_years>?";
+                        "select * from doctor where previous_experience_in_years>=?";
+    private static final String FIND_ALL_DOCTORS_FROM_HOSPITAL_BY_HOSPITAL_ID = "select * from doctor where hospital_id=?";
 
 
     @Override
@@ -55,6 +57,13 @@ public class DoctorDaoImpl implements DoctorDao {
         return jdbcTemplate.queryForList(FIND_ALL_DOCTORS_WITH_EXPERIENCE_MORE_THAN,
                 Doctor.class,
                 experience);
+    }
+
+    @Override
+    public List<Doctor> getAllDoctorsFromHospitalByHospitalId(Integer hospitalId) {
+        return jdbcTemplate.query(FIND_ALL_DOCTORS_FROM_HOSPITAL_BY_HOSPITAL_ID,
+                new BeanPropertyRowMapper<>(Doctor.class),
+                hospitalId);
     }
 
     @Override

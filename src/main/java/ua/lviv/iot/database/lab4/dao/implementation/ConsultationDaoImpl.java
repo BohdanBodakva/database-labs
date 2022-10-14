@@ -8,7 +8,9 @@ import org.springframework.stereotype.Repository;
 import ua.lviv.iot.database.lab4.dao.ConsultationDao;
 import ua.lviv.iot.database.lab4.models.Consultation;
 import ua.lviv.iot.database.lab4.models.DoctorPosition;
+import ua.lviv.iot.database.lab4.models.Patient;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,6 +32,12 @@ public class ConsultationDaoImpl implements ConsultationDao {
             "date=?," +
             "conclusion=? where doctor_id=? and patient_id=?";
     private static final String DELETE = "delete from consultation where doctor_id=? and patient_id=?";
+    private static final String FIND_CONSULTATIONS_ON_DATE =
+            "select * from consultation where date=?";
+    private static final String FIND_CONSULTATIONS_FOR_PATIENT =
+            "select * from consultation where patient_id=?";
+    private static final String FIND_CONSULTATIONS_FOR_DOCTOR =
+            "select * from consultation where doctor_id=?";
 
     @Override
     public List<Consultation> findAll() {
@@ -80,5 +88,26 @@ public class ConsultationDaoImpl implements ConsultationDao {
         }
         return "Consultation {doctor_id=" + doctorId +
                 ", patient_id=" + patientId + "} was successfully updated";
+    }
+
+    @Override
+    public List<Consultation> getConsultationsOnDate(String date) {
+        return jdbcTemplate.query(FIND_CONSULTATIONS_ON_DATE,
+                new BeanPropertyRowMapper<>(Consultation.class),
+                LocalDate.parse(date));
+    }
+
+    @Override
+    public List<Consultation> getAllConsultationsForPatient(Integer patientId) {
+        return jdbcTemplate.query(FIND_CONSULTATIONS_FOR_PATIENT,
+                new BeanPropertyRowMapper<>(Consultation.class),
+                patientId);
+    }
+
+    @Override
+    public List<Consultation> getAllConsultationsForDoctor(Integer doctorId) {
+        return jdbcTemplate.query(FIND_CONSULTATIONS_FOR_DOCTOR,
+                new BeanPropertyRowMapper<>(Consultation.class),
+                doctorId);
     }
 }

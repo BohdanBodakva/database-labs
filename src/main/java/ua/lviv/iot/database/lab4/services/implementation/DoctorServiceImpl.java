@@ -28,6 +28,11 @@ public class DoctorServiceImpl implements DoctorService {
     }
 
     @Override
+    public List<Doctor> getAllDoctorsFromHospitalByHospitalId(Integer hospitalId) {
+        return doctorDao.getAllDoctorsFromHospitalByHospitalId(hospitalId);
+    }
+
+    @Override
     public List<Doctor> findAll() {
         return doctorDao.findAll();
     }

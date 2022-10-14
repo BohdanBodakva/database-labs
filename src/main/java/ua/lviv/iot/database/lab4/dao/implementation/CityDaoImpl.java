@@ -32,7 +32,7 @@ public class CityDaoImpl implements CityDao {
     private static final String FIND_ALL_CITIES_FROM_REGION_BY_REGION_ID = "select * from city where region_name=?";
 
     @Override
-    public List<City> getAllCitiesFromRegionByRegionId(Integer regionId) {
+    public List<City> getAllCitiesFromRegionByRegionId(String regionId) {
         return jdbcTemplate.queryForList(FIND_ALL_CITIES_FROM_REGION_BY_REGION_ID,
                 City.class,
                 regionId);

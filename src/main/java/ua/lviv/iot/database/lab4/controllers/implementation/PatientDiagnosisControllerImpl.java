@@ -3,6 +3,7 @@ package ua.lviv.iot.database.lab4.controllers.implementation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import ua.lviv.iot.database.lab4.controllers.PatientDiagnosisController;
+import ua.lviv.iot.database.lab4.models.Patient;
 import ua.lviv.iot.database.lab4.models.PatientDiagnosis;
 import ua.lviv.iot.database.lab4.services.PatientDiagnosisService;
 
@@ -40,5 +41,10 @@ public class PatientDiagnosisControllerImpl implements PatientDiagnosisControlle
     @Override
     public String delete(Integer patientId, String diagnosisName) {
         return patientDiagnosisService.delete(patientId, diagnosisName);
+    }
+
+    @Override
+    public List<Patient> patientsWithDiagnosis(String diagnosisName) {
+        return patientDiagnosisService.patientsWithDiagnosis(diagnosisName);
     }
 }
