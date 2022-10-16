@@ -6,5 +6,5 @@ import ua.lviv.iot.database.lab4.models.DoctorPosition;
 import java.util.List;
 
 public interface DoctorPositionService extends ManyToManyService<DoctorPosition, Integer, String> {
-    List<Doctor> doctorsOnPosition(String positionName);
+    List<Doctor> getDoctorsOnPosition(String positionName);
 }

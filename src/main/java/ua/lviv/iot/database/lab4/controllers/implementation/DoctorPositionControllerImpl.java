@@ -45,6 +45,6 @@ public class DoctorPositionControllerImpl implements DoctorPositionController {
 
     @Override
     public List<Doctor> doctorsOnPosition(String positionName) {
-        return doctorPositionService.doctorsOnPosition(positionName);
+        return doctorPositionService.getDoctorsOnPosition(positionName);
     }
 }

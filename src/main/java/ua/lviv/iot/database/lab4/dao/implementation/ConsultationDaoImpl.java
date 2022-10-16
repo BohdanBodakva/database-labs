@@ -12,6 +12,7 @@ import ua.lviv.iot.database.lab4.models.Patient;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Repository
@@ -24,14 +25,14 @@ public class ConsultationDaoImpl implements ConsultationDao {
     }
 
     private static final String FIND_ALL = "select * from consultation";
-    private static final String FIND_BY_ID = "select * from consultation where doctor_id=? and patient_id=?";
+    private static final String FIND_BY_ID = "select * from consultation where doctor_id=? and patient_id=? and date=?";
     private static final String CREATE = "insert into consultation(doctor_id, patient_id, date, conclusion)" +
             "values(?, ?, ?, ?)";
     private static final String UPDATE = "update consultation set doctor_id=?," +
             "patient_id=?," +
             "date=?," +
-            "conclusion=? where doctor_id=? and patient_id=?";
-    private static final String DELETE = "delete from consultation where doctor_id=? and patient_id=?";
+            "conclusion=? where doctor_id=? and patient_id=? and date=?";
+    private static final String DELETE = "delete from consultation where doctor_id=? and patient_id=? and date=?";
     private static final String FIND_CONSULTATIONS_ON_DATE =
             "select * from consultation where date=?";
     private static final String FIND_CONSULTATIONS_FOR_PATIENT =
@@ -45,15 +46,16 @@ public class ConsultationDaoImpl implements ConsultationDao {
     }
 
     @Override
-    public Consultation findById(Integer doctorId, Integer patientId) {
+    public Consultation findById(Integer doctorId, Integer patientId, String date) {
         Consultation consultation = null;
 
         try {
-            consultation = jdbcTemplate.queryForObject(FIND_BY_ID,
-                    Consultation.class, doctorId, patientId);
-        } catch (EmptyResultDataAccessException e){
+            consultation = (Consultation) jdbcTemplate.query(FIND_BY_ID,
+                    new BeanPropertyRowMapper(Consultation.class), doctorId, patientId, LocalDate.parse(date))
+                    .stream().findFirst().get();
+        } catch (EmptyResultDataAccessException | NoSuchElementException e){
             System.out.println("Consultation {doctor_id=" + doctorId +
-                    ", patient_id=" + patientId + "} don't exist!");
+                    ", patient_id=" + patientId + ", date=" + date +  "} don't exist!");
         }
 
         return consultation;
@@ -70,9 +72,10 @@ public class ConsultationDaoImpl implements ConsultationDao {
     }
 
     @Override
-    public String update(Integer doctorId, Integer patientId, Consultation consultation) {
+    public String update(Integer doctorId, Integer patientId, String date, Consultation consultation) {
         int result = jdbcTemplate.update(UPDATE, consultation.getDoctorId(), consultation.getPatientId(),
-                doctorId, patientId);
+                consultation.getDate(), consultation.getConclusion(),
+                doctorId, patientId, date);
         if(result == 0){
             return "Consultation wasn't updated";
         }
@@ -81,13 +84,13 @@ public class ConsultationDaoImpl implements ConsultationDao {
     }
 
     @Override
-    public String delete(Integer doctorId, Integer patientId) {
-        int result = jdbcTemplate.update(DELETE, doctorId, patientId);
+    public String delete(Integer doctorId, Integer patientId, String date) {
+        int result = jdbcTemplate.update(DELETE, doctorId, patientId, date);
         if(result == 0){
             return "Consultation wasn't deleted";
         }
         return "Consultation {doctor_id=" + doctorId +
-                ", patient_id=" + patientId + "} was successfully updated";
+                ", patient_id=" + patientId + ", date=" + date +  "} was successfully deleted";
     }
 
     @Override

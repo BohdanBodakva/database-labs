@@ -24,7 +24,7 @@ public class PatientDaoImpl implements PatientDao {
     }
 
     private static final String FIND_ALL = "select * from patient";
-    private static final String FIND_BY_ID = "select * from patient where name=?";
+    private static final String FIND_BY_ID = "select * from patient where id=?";
     private static final String CREATE =
             "insert into patient(surname, name, registration_date, data_id, hospital_id) " +
                         "values(?, ?, ?, ?, ?)";
@@ -50,8 +50,9 @@ public class PatientDaoImpl implements PatientDao {
         Patient patient = null;
 
         try {
-            patient = jdbcTemplate.queryForObject(FIND_BY_ID,
-                    Patient.class, id);
+            patient = jdbcTemplate.query(FIND_BY_ID,
+                    new BeanPropertyRowMapper<>(Patient.class), id)
+                    .stream().findFirst().get();
         } catch (EmptyResultDataAccessException e){
             System.out.println("Patient with id=" + id + " don't exist!");
         }

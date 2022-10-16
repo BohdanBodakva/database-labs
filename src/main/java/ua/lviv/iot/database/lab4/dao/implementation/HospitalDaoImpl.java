@@ -41,8 +41,9 @@ public class HospitalDaoImpl implements HospitalDao {
         Hospital hospital = null;
 
         try {
-            hospital = jdbcTemplate.queryForObject(FIND_BY_ID,
-                    Hospital.class, id);
+            hospital = jdbcTemplate.query(FIND_BY_ID,
+                    new BeanPropertyRowMapper<>(Hospital.class), id)
+                    .stream().findFirst().get();
         } catch (EmptyResultDataAccessException e){
             System.out.println("Hospital with id=" + id + " don't exist!");
         }
@@ -83,15 +84,15 @@ public class HospitalDaoImpl implements HospitalDao {
 
     @Override
     public List<Hospital> getAllHospitalsFromCityByCityId(String cityId) {
-        return jdbcTemplate.queryForList(FIND_ALL_HOSPITALS_FROM_CITY_BY_CITY_ID,
-                Hospital.class,
+        return jdbcTemplate.query(FIND_ALL_HOSPITALS_FROM_CITY_BY_CITY_ID,
+                new BeanPropertyRowMapper<>(Hospital.class),
                 cityId);
     }
 
     @Override
     public List<Hospital> getAllHospitalsByName(String hospitalName) {
-        return jdbcTemplate.queryForList(FIND_ALL_HOSPITALS_BY_NAME,
-                Hospital.class,
+        return jdbcTemplate.query(FIND_ALL_HOSPITALS_BY_NAME,
+                new BeanPropertyRowMapper<>(Hospital.class),
                 "%" + hospitalName + "%");
     }
 }

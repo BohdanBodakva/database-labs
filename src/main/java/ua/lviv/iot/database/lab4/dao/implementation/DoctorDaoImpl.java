@@ -24,7 +24,7 @@ public class DoctorDaoImpl implements DoctorDao {
     }
 
     private static final String FIND_ALL = "select * from doctor";
-    private static final String FIND_BY_ID = "select * from doctor where name=?";
+    private static final String FIND_BY_ID = "select * from doctor where id=?";
     private static final String CREATE = "insert into doctor" +
                                                 "(surname, " +
                                                 "name, " +
@@ -36,7 +36,7 @@ public class DoctorDaoImpl implements DoctorDao {
                                                 "previous_experience_in_years=?," +
                                                 "hire_date=?," +
                                                 "hospital_id=?," +
-                                                "salary_in_hrn=? where name=?";
+                                                "salary_in_hrn=? where id=?";
     private static final String DELETE = "delete from doctor where id=?";
 
     private static final String FIND_ALL_DOCTORS_BY_SURNAME = "select * from doctor where surname like ?";
@@ -47,15 +47,15 @@ public class DoctorDaoImpl implements DoctorDao {
 
     @Override
     public List<Doctor> getAllDoctorsBySurname(String doctorSurname) {
-        return jdbcTemplate.queryForList(FIND_ALL_DOCTORS_BY_SURNAME,
-                Doctor.class,
+        return jdbcTemplate.query(FIND_ALL_DOCTORS_BY_SURNAME,
+                new BeanPropertyRowMapper<>(Doctor.class),
                 "%" + doctorSurname + "%");
     }
 
     @Override
     public List<Doctor> getAllDoctorsWithExperienceMoreThan(Integer experience) {
-        return jdbcTemplate.queryForList(FIND_ALL_DOCTORS_WITH_EXPERIENCE_MORE_THAN,
-                Doctor.class,
+        return jdbcTemplate.query(FIND_ALL_DOCTORS_WITH_EXPERIENCE_MORE_THAN,
+                new BeanPropertyRowMapper<>(Doctor.class),
                 experience);
     }
 
@@ -76,10 +76,11 @@ public class DoctorDaoImpl implements DoctorDao {
         Doctor doctor = null;
 
         try {
-            doctor = jdbcTemplate.queryForObject(FIND_BY_ID,
-                    Doctor.class, id);
+            doctor = jdbcTemplate.query(FIND_BY_ID,
+                    new BeanPropertyRowMapper<>(Doctor.class), id)
+                    .stream().findFirst().get();
         } catch (EmptyResultDataAccessException e){
-            System.out.println("Doctor with name=" + id + " don't exist!");
+            System.out.println("Doctor with id=" + id + " don't exist!");
         }
 
         return doctor;

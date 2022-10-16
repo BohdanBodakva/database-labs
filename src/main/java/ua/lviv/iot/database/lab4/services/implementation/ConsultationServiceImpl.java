@@ -23,8 +23,8 @@ public class ConsultationServiceImpl implements ConsultationService {
     }
 
     @Override
-    public Consultation findById(Integer doctorId, Integer patientId) {
-        return consultationDao.findById(doctorId, patientId);
+    public Consultation findById(Integer doctorId, Integer patientId, String date) {
+        return consultationDao.findById(doctorId, patientId, date);
     }
 
     @Override
@@ -33,13 +33,13 @@ public class ConsultationServiceImpl implements ConsultationService {
     }
 
     @Override
-    public String update(Integer doctorId, Integer patientId, Consultation consultation) {
-        return consultationDao.update(doctorId, patientId, consultation);
+    public String update(Integer doctorId, Integer patientId, String date, Consultation consultation) {
+        return consultationDao.update(doctorId, patientId, date, consultation);
     }
 
     @Override
-    public String delete(Integer doctorId, Integer patientId) {
-        return consultationDao.delete(doctorId, patientId);
+    public String delete(Integer doctorId, Integer patientId, String date) {
+        return consultationDao.delete(doctorId, patientId, date);
     }
 
     @Override

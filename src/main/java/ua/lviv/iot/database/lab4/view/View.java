@@ -2,11 +2,14 @@ package ua.lviv.iot.database.lab4.view;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Component;
 import ua.lviv.iot.database.lab4.controllers.*;
 import ua.lviv.iot.database.lab4.models.*;
 
+import javax.print.Doc;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -58,12 +61,14 @@ public class View {
         menu.put("13", "13 - create Medicine");
         menu.put("14", "14 - update Medicine");
         menu.put("15", "15 - delete Medicine");
+        menu.put("16", "16 - patients that take Medicine");
 
         methodsMenu.put("11", this::getAllMedicine);
         methodsMenu.put("12", this::getAllMedicineByNameTemplate);
         methodsMenu.put("13", this::createMedicine);
         methodsMenu.put("14", this::updateMedicine);
         methodsMenu.put("15", this::deleteMedicineByName);
+        methodsMenu.put("16", this::getAllPatientsThatTaleMedicine);
 
         menu.put("2", "2 - Table: Diagnosis");
         menu.put("21", "21 - find all Diagnosis");
@@ -71,12 +76,14 @@ public class View {
         menu.put("23", "23 - create Diagnosis");
         menu.put("24", "24 - update Diagnosis");
         menu.put("25", "25 - delete Diagnosis");
+        menu.put("26", "26 - patients with Diagnosis");
 
         methodsMenu.put("21", this::getAllDiagnosis);
         methodsMenu.put("22", this::getAllDiagnosisByNameTemplate);
         methodsMenu.put("23", this::createDiagnosis);
         methodsMenu.put("24", this::updateDiagnosis);
         methodsMenu.put("25", this::deleteDiagnosisByName);
+        methodsMenu.put("26", this::getAllPatientsWithDiagnosis);
 
         menu.put("3", "3 - Table: WorkPosition");
         menu.put("31", "31 - find all WorkPositions");
@@ -84,12 +91,14 @@ public class View {
         menu.put("33", "33 - create WorkPosition");
         menu.put("34", "34 - update WorkPosition");
         menu.put("35", "35 - delete WorkPosition");
+        menu.put("36", "36 - doctors on WorkPosition");
 
         methodsMenu.put("31", this::getAllWorkPositions);
         methodsMenu.put("32", this::getAllWorkPositionsByNameTemplate);
         methodsMenu.put("33", this::createWorkPosition);
         methodsMenu.put("34", this::updateWorkPosition);
         methodsMenu.put("35", this::deleteWorkPositionByName);
+        methodsMenu.put("36", this::getDoctorsOnPosition);
 
         menu.put("4", "4 - Table: City");
         menu.put("41", "41 - find all Cities");
@@ -128,6 +137,7 @@ public class View {
         menu.put("66", "66 - delete Doctor");
         menu.put("67", "67 - find Doctors by experience");
         menu.put("68", "68 - find Doctors from hospital");
+        menu.put("69", "69 - all consultations for Doctor");
 
         methodsMenu.put("61", this::getAllDoctors);
         methodsMenu.put("62", this::getDoctorById);
@@ -137,17 +147,24 @@ public class View {
         methodsMenu.put("66", this::deleteDoctorById);
         methodsMenu.put("67", this::getAllDoctorsWithExperienceMoreThan);
         methodsMenu.put("68", this::getAllDoctorsFromHospitalByHospitalId);
+        methodsMenu.put("69", this::getAllConsultationsForDoctor);
 
-        menu.put("7", "7 - Table: Data");
-        menu.put("71", "72 - find all Data");
-        menu.put("72", "72 - find Data by id");
-        menu.put("73", "73 - update Data");
+        menu.put("7", "7 - Table: Consultation");
+        menu.put("71", "71 - find all Consultations");
+        menu.put("72", "72 - find Consultation by id");
+        menu.put("73", "73 - create Consultation");
+        menu.put("74", "74 - update Consultation");
+        menu.put("75", "75 - delete Consultation");
+        menu.put("76", "76 - Consultations on date");
 
-        methodsMenu.put("71", this::getAllPatientData);
-        methodsMenu.put("72", this::getPatientDataById);
-        methodsMenu.put("73", this::updatePatientDataById);
+        methodsMenu.put("71", this::getAllConsultations);
+        methodsMenu.put("72", this::getConsultationById);
+        methodsMenu.put("73", this::createConsultation);
+        methodsMenu.put("74", this::updateConsultation);
+        methodsMenu.put("75", this::deleteConsultationById);
+        methodsMenu.put("76", this::getConsultationsOnDate);
 
-        menu.put("8", "2 - Table: Patient");
+        menu.put("8", "8 - Table: Patient");
         menu.put("81", "81 - find all Patients");
         menu.put("82", "82 - find Patient by id");
         menu.put("83", "83 - find Patients by surname");
@@ -155,6 +172,7 @@ public class View {
         menu.put("85", "85 - update Patient");
         menu.put("86", "86 - delete Patient");
         menu.put("87", "87 - find patients from hospital");
+        menu.put("88", "88 - all consultations for Patient");
 
         methodsMenu.put("81", this::getAllPatients);
         methodsMenu.put("82", this::getPatientById);
@@ -163,10 +181,11 @@ public class View {
         methodsMenu.put("85", this::updatePatient);
         methodsMenu.put("86", this::deletePatientById);
         methodsMenu.put("87", this::getAllPatientsFromHospitalByHospitalId);
+        methodsMenu.put("88", this::getAllConsultationsForPatient);
 
         menu.put("9", "9 - Table: Hospital");
-        menu.put("91", "91 - find Hospital by id");
-        menu.put("92", "92 - find all Hospitals");
+        menu.put("91", "91 - find all Hospitals");
+        menu.put("92", "92 - find Hospital by id");
         menu.put("93", "93 - find Hospitals by name");
         menu.put("94", "94 - create Hospital");
         menu.put("95", "95 - update Hospital");
@@ -179,14 +198,9 @@ public class View {
         methodsMenu.put("95", this::updateHospital);
         methodsMenu.put("96", this::deleteHospitalById);
 
-//        menu.put("10", "10 - Table: Consultation");
-//        menu.put("101", "101 - find all Consultations");
-//        menu.put("102", "102 - find Consultation by id");
-//        menu.put("103", "103 - create Consultation");
-//        menu.put("104", "104 - update Consultation");
-//        menu.put("105", "105 - delete Consultation");
-
     }
+
+
 
     private void outputMenu() {
         System.out.println("\nMENU:");
@@ -225,7 +239,7 @@ public class View {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        } while (!keyMenu.equals("q"));
+        } while (!keyMenu.equals("Q"));
     }
 
 
@@ -273,6 +287,15 @@ public class View {
         System.out.println(medicineController.delete(name));
     }
 
+    public void getAllPatientsThatTaleMedicine() {
+        System.out.println("\nEnter medicine name: ");
+        String medicineName = scanner.nextLine();
+        List<Patient> patients = patientMedicineController.patientsThatTakesMedicine(medicineName);
+        for(Patient p : patients){
+            System.out.println(p);
+        }
+    }
+
 
 //    Diagnosis
     public void getAllDiagnosis(){
@@ -309,6 +332,15 @@ public class View {
         System.out.println("\nEnter name: ");
         String name = scanner.nextLine();
         System.out.println(diagnosisController.delete(name));
+    }
+
+    public void getAllPatientsWithDiagnosis(){
+        System.out.println("\nEnter diagnosis name: ");
+        String diagnosisName = scanner.nextLine();
+        List<Patient> patients = patientDiagnosisController.patientsWithDiagnosis(diagnosisName);
+        for(Patient p : patients){
+            System.out.println(p);
+        }
     }
 
 
@@ -350,6 +382,15 @@ public class View {
         System.out.println(workPositionController.delete(name));
     }
 
+    public void getDoctorsOnPosition(){
+        System.out.println("\nEnter position name: ");
+        String positionName = scanner.nextLine();
+        List<Doctor> doctors = doctorPositionController.doctorsOnPosition(positionName);
+        for(Doctor d : doctors){
+            System.out.println(d);
+        }
+    }
+
 
 //    City
     public void getAllCities(){
@@ -375,17 +416,24 @@ public class View {
             System.out.println(cityController.create(new City(cityName, regionName)));
         }catch (DuplicateKeyException e){
             System.out.println("Such city already exists!");
+        }catch (DataIntegrityViolationException a){
+            System.out.println("Region name is incorrect!");
         }
 
     }
     public void updateCity(){
-        System.out.println("\nEnter city name to update: ");
-        String cityNameToUpdate = scanner.nextLine();
-        System.out.println("\nEnter new city name: ");
-        String newCityName = scanner.nextLine();
-        System.out.println("\nEnter new region name: ");
-        String newRegionName = scanner.nextLine();
-        System.out.println(cityController.update(cityNameToUpdate, new City(newCityName, newRegionName)));
+        try {
+            System.out.println("\nEnter city name to update: ");
+            String cityNameToUpdate = scanner.nextLine();
+            System.out.println("\nEnter new city name: ");
+            String newCityName = scanner.nextLine();
+            System.out.println("\nEnter new region name: ");
+            String newRegionName = scanner.nextLine();
+            System.out.println(cityController.update(cityNameToUpdate, new City(newCityName, newRegionName)));
+        }catch (DataIntegrityViolationException a){
+            System.out.println("Region name is incorrect!");
+        }
+
     }
     public void deleteCityByName(){
         System.out.println("\nEnter name: ");
@@ -451,9 +499,9 @@ public class View {
     public void getDoctorById(){
         try{
             System.out.println("\nEnter id: ");
-            Integer id = scanner.nextInt();
+            Integer id = Integer.parseInt(scanner.nextLine());
             System.out.println(doctorController.findById(id));
-        }catch (NullPointerException e){
+        }catch (NoSuchElementException e){
             System.out.println("Doctor with such id doesn't exist!");
         }
 
@@ -472,43 +520,43 @@ public class View {
         System.out.println("\nEnter name: ");
         String name = scanner.nextLine();
         System.out.println("\nEnter experience: ");
-        Integer experience = scanner.nextInt();
+        Integer experience = Integer.parseInt(scanner.nextLine());
         System.out.println("\nEnter hire date: ");
         String hireDate = scanner.nextLine();
         System.out.println("\nEnter hospital id: ");
-        Integer hospitalId = scanner.nextInt();
+        Integer hospitalId = Integer.parseInt(scanner.nextLine());
         System.out.println("\nEnter salary: ");
-        Integer salary = scanner.nextInt();
+        Integer salary = Integer.parseInt(scanner.nextLine());
         System.out.println(doctorController.create(new Doctor(null, surname, name, experience, LocalDate.parse(hireDate),
                                                     hospitalId, salary)));
     }
     public void updateDoctor(){
         System.out.println("\nEnter doctor id to update: ");
-        Integer doctorIdToUpdate = scanner.nextInt();
+        Integer doctorIdToUpdate = Integer.parseInt(scanner.nextLine());
         System.out.println("\nEnter surname: ");
         String surname = scanner.nextLine();
         System.out.println("\nEnter name: ");
         String name = scanner.nextLine();
         System.out.println("\nEnter experience: ");
-        Integer experience = scanner.nextInt();
+        Integer experience = Integer.parseInt(scanner.nextLine());
         System.out.println("\nEnter hire date: ");
         String hireDate = scanner.nextLine();
         System.out.println("\nEnter hospital id: ");
-        Integer hospitalId = scanner.nextInt();
+        Integer hospitalId = Integer.parseInt(scanner.nextLine());
         System.out.println("\nEnter salary: ");
-        Integer salary = scanner.nextInt();
+        Integer salary = Integer.parseInt(scanner.nextLine());
         System.out.println(doctorController.update(doctorIdToUpdate, new Doctor(null, surname, name, experience,
                                                                         LocalDate.parse(hireDate),
                                                                         hospitalId, salary)));
     }
     public void deleteDoctorById(){
         System.out.println("\nEnter doctor id: ");
-        Integer id = scanner.nextInt();
+        Integer id = Integer.parseInt(scanner.nextLine());
         System.out.println(doctorController.delete(id));
     }
     public void getAllDoctorsWithExperienceMoreThan(){
         System.out.println("\nEnter experience: ");
-        Integer experience = scanner.nextInt();
+        Integer experience = Integer.parseInt(scanner.nextLine());
         List<Doctor> doctors = doctorController.getAllDoctorsWithExperienceMoreThan(experience);
         for(Doctor d : doctors){
             System.out.println(d);
@@ -516,10 +564,18 @@ public class View {
     }
     public void getAllDoctorsFromHospitalByHospitalId(){
         System.out.println("\nEnter hospital id: ");
-        Integer hospitalId = scanner.nextInt();
+        Integer hospitalId = Integer.parseInt(scanner.nextLine());
         List<Doctor> doctors = doctorController.getAllDoctorsFromHospitalByHospitalId(hospitalId);
         for(Doctor d : doctors){
             System.out.println(d);
+        }
+    }
+    public void getAllConsultationsForDoctor(){
+        System.out.println("\nEnter doctor id: ");
+        Integer doctorId = Integer.parseInt(scanner.nextLine());
+        List<Consultation> consultations = consultationController.getAllConsultationsForDoctor(doctorId);
+        for(Consultation c : consultations){
+            System.out.println(c);
         }
     }
 
@@ -534,7 +590,7 @@ public class View {
     public void getPatientDataById(){
         try{
             System.out.println("\nEnter id: ");
-            Integer id = scanner.nextInt();
+            Integer id = Integer.parseInt(scanner.nextLine());
             System.out.println(patientDataController.findById(id));
         }catch (NullPointerException e){
             System.out.println("Data with such id doesn't exist!");
@@ -544,15 +600,15 @@ public class View {
     }
     public void updatePatientDataById(){
         System.out.println("\nEnter data id to update: ");
-        Integer patientDataIdToUpdate = scanner.nextInt();
+        Integer patientDataIdToUpdate = Integer.parseInt(scanner.nextLine());
         System.out.println("\nEnter temperature: ");
         Float temperature = scanner.nextFloat();
         System.out.println("\nEnter systolic pressure: ");
-        Integer systPressure = scanner.nextInt();
+        Integer systPressure = Integer.parseInt(scanner.nextLine());
         System.out.println("\nEnter diastolic pressure: ");
-        Integer diastPressure = scanner.nextInt();
+        Integer diastPressure = Integer.parseInt(scanner.nextLine());
         System.out.println("\nEnter heart rate: ");
-        Integer heartRate = scanner.nextInt();
+        Integer heartRate = Integer.parseInt(scanner.nextLine());
         System.out.println("\nEnter special notes: ");
         String specialNotes = scanner.nextLine();
         System.out.println(patientDataController.update(patientDataIdToUpdate, new PatientData(null, temperature,
@@ -569,14 +625,19 @@ public class View {
         }
     }
     public void getPatientById(){
+        Patient patient = null;
+
         try{
             System.out.println("\nEnter id: ");
-            Integer id = scanner.nextInt();
-            System.out.println(patientController.findById(id));
-        }catch (NullPointerException e){
+            Integer id = Integer.parseInt(scanner.nextLine());
+            patient = patientController.findById(id);
+        }catch (NoSuchElementException e){
             System.out.println("Patient with such id doesn't exist!");
         }
 
+        if(patient != null){
+            System.out.println(patient);
+        }
 
     }
     public void getAllPatientsBySurnameTemplate(){
@@ -595,13 +656,13 @@ public class View {
         System.out.println("\nEnter register date: ");
         String registerDate = scanner.nextLine();
         System.out.println("\nEnter hospital id: ");
-        Integer hospitalId = scanner.nextInt();
+        Integer hospitalId = Integer.parseInt(scanner.nextLine());
         System.out.println(patientController.create(new Patient(null, surname, name, LocalDate.parse(registerDate),
                                                             null, hospitalId)));
     }
     public void updatePatient(){
         System.out.println("\nEnter patient id to update: ");
-        Integer patientIdToUpdate = scanner.nextInt();
+        Integer patientIdToUpdate = Integer.parseInt(scanner.nextLine());
         System.out.println("\nEnter surname: ");
         String surname = scanner.nextLine();
         System.out.println("\nEnter name: ");
@@ -609,21 +670,29 @@ public class View {
         System.out.println("\nEnter register date: ");
         String registerDate = scanner.nextLine();
         System.out.println("\nEnter hospital id: ");
-        Integer hospitalId = scanner.nextInt();
+        Integer hospitalId = Integer.parseInt(scanner.nextLine());
         System.out.println(patientController.update(patientIdToUpdate, new Patient(null, surname, name,
                                             LocalDate.parse(registerDate), null, hospitalId)));
     }
     public void deletePatientById(){
         System.out.println("\nEnter id");
-        Integer id  = scanner.nextInt();
+        Integer id  = Integer.parseInt(scanner.nextLine());
         System.out.println(patientController.delete(id));
     }
     public void getAllPatientsFromHospitalByHospitalId(){
         System.out.println("\nEnter hospital id: ");
-        Integer hospitalId = scanner.nextInt();
+        Integer hospitalId = Integer.parseInt(scanner.nextLine());
         List<Patient> patients = patientController.getAllPatientsFromHospitalByHospitalId(hospitalId);
         for(Patient p : patients){
             System.out.println(p);
+        }
+    }
+    public void getAllConsultationsForPatient(){
+        System.out.println("\nEnter patient id: ");
+        Integer patientId = Integer.parseInt(scanner.nextLine());
+        List<Consultation> consultations = consultationController.getAllConsultationsForPatient(patientId);
+        for(Consultation c : consultations){
+            System.out.println(c);
         }
     }
 
@@ -636,12 +705,18 @@ public class View {
         }
     }
     public void getHospitalById(){
+        Hospital hospital = null;
+
         try{
             System.out.println("Enter id: ");
-            Integer id = scanner.nextInt();
-            System.out.println(hospitalController.findById(id));
-        }catch (NullPointerException e){
+            Integer id = Integer.parseInt(scanner.nextLine());
+            hospital = hospitalController.findById(id);
+        }catch (NoSuchElementException e){
             System.out.println("Hospital with such id doesn't exist!");
+        }
+
+        if(hospital != null){
+            System.out.println(hospital);
         }
 
     }
@@ -654,17 +729,23 @@ public class View {
         }
     }
     public void createHospital(){
-        System.out.println("\nEnter name: ");
-        String name = scanner.nextLine();
-        System.out.println("\nEnter address: ");
-        String address = scanner.nextLine();
-        System.out.println("\nEnter city name: ");
-        String cityName = scanner.nextLine();
-        System.out.println(hospitalController.create(new Hospital(null, name, address, cityName)));
+        try {
+            System.out.println("\nEnter name: ");
+            String name = scanner.nextLine();
+            System.out.println("\nEnter address: ");
+            String address = scanner.nextLine();
+            System.out.println("\nEnter city name: ");
+            String cityName = scanner.nextLine();
+            System.out.println(hospitalController.create(new Hospital(null, name, address, cityName)));
+        }catch (DataIntegrityViolationException e){
+            System.out.println("This city doesn't exist!");
+        }
+
     }
     public void updateHospital(){
+        try {
         System.out.println("\nEnter hospital id to update: ");
-        Integer hospitalIdToUpdate = scanner.nextInt();
+        Integer hospitalIdToUpdate = Integer.parseInt(scanner.nextLine());
         System.out.println("\nEnter name: ");
         String name = scanner.nextLine();
         System.out.println("\nEnter address: ");
@@ -672,10 +753,13 @@ public class View {
         System.out.println("\nEnter city name: ");
         String cityName = scanner.nextLine();
         System.out.println(hospitalController.update(hospitalIdToUpdate, new Hospital(null, name, address, cityName)));
+        }catch (DataIntegrityViolationException | NoSuchElementException e){
+            System.out.println("This city doesn't exist!");
+        }
     }
     public void deleteHospitalById(){
         System.out.println("\nEnter id: ");
-        Integer id = scanner.nextInt();
+        Integer id = Integer.parseInt(scanner.nextLine());
         System.out.println(hospitalController.delete(id));
     }
     public void getAllHospitalsFromCityByCityName(){
@@ -689,26 +773,90 @@ public class View {
 
 
 //   Consultation
-    public List<Consultation> getAllConsultations(){
-        return consultationController.findAll();
+    public void getAllConsultations(){
+        List<Consultation> consultations = consultationController.findAll();
+        for(Consultation c : consultations){
+            System.out.println(c);
+        }
     }
-    public Consultation getConsultationById(Integer doctorId, Integer patientId){
-        return consultationController.findById(doctorId, patientId);
+    public void getConsultationById(){
+        Consultation consultation = null;
+        try{
+            System.out.println("Enter doctor id: ");
+            Integer doctorId = Integer.parseInt(scanner.nextLine());
+            System.out.println("Enter patient id: ");
+            Integer patientId = Integer.parseInt(scanner.nextLine());
+            System.out.println("Enter date: ");
+            String date = scanner.nextLine();
+            consultation = consultationController.findById(doctorId, patientId, date);
+        }catch (NullPointerException e){
+            System.out.println("Consultation with such id doesn't exist!");
+        }
+
+        if(consultation != null){
+            System.out.println(consultation);
+        }
+
     }
-    public String createConsultation(Integer doctorId, Integer patientId,
-                                     String date, String conclusion){
-        return consultationController.create(new Consultation(doctorId, patientId,
-                                        LocalDate.parse(date), conclusion));
+    public void createConsultation(){
+        try {
+            System.out.println("\nEnter doctor id: ");
+            Integer doctorId = Integer.parseInt(scanner.nextLine());
+            System.out.println("\nEnter patient id: ");
+            Integer patientId = Integer.parseInt(scanner.nextLine());
+            System.out.println("\nEnter date: ");
+            String date = scanner.nextLine();
+            System.out.println("\nEnter conclusion: ");
+            String conclusion = scanner.nextLine();
+            String consultation = consultationController.create(new Consultation(doctorId, patientId,
+                    LocalDate.parse(date), conclusion));
+            if (consultation != null){
+                System.out.println(consultation);
+            }
+        }catch (DataIntegrityViolationException e){
+            System.out.println("You have entered incorrect data!");
+        }
+
     }
-    public String updateConsultation(Integer doctorIdToUpdate, Integer patientIdToUpdate,
-                                            Integer newDoctorId, Integer newPatientId,
-                                            String date, String conclusion){
-        return consultationController.update(doctorIdToUpdate, patientIdToUpdate,
-                                            new Consultation(newDoctorId, newPatientId,
-                                                LocalDate.parse(date), conclusion));
+    public void updateConsultation(){
+        try {
+            System.out.println("\nEnter doctor id to update: ");
+            Integer doctorIdToUpdate = Integer.parseInt(scanner.nextLine());
+            System.out.println("\nEnter patient id to update: ");
+            Integer patientIdToUpdate = Integer.parseInt(scanner.nextLine());
+            System.out.println("\nEnter date to update: ");
+            String dateIdToUpdate = scanner.nextLine();
+            System.out.println("\nEnter new doctor id: ");
+            Integer newDoctorId = Integer.parseInt(scanner.nextLine());
+            System.out.println("\nEnter new patient id: ");
+            Integer newPatientId = Integer.parseInt(scanner.nextLine());
+            System.out.println("\nEnter date: ");
+            String date = scanner.nextLine();
+            System.out.println("\nEnter conclusion: ");
+            String conclusion = scanner.nextLine();
+            System.out.println(consultationController.update(doctorIdToUpdate, patientIdToUpdate, dateIdToUpdate,
+                                                new Consultation(newDoctorId, newPatientId,
+                                                    LocalDate.parse(date), conclusion)));
+        }catch (DataIntegrityViolationException e){
+            System.out.println("You have entered incorrect data!");
+        }
     }
-    public String deleteConsultationById(Integer doctorId, Integer patientId){
-        return consultationController.delete(doctorId, patientId);
+    public void deleteConsultationById(){
+        System.out.println("\nEnter doctor id: ");
+        Integer doctorId = Integer.parseInt(scanner.nextLine());
+        System.out.println("\nEnter doctor id: ");
+        Integer patientId = Integer.parseInt(scanner.nextLine());
+        System.out.println("\nEnter date: ");
+        String date = scanner.nextLine();
+        System.out.println(consultationController.delete(doctorId, patientId, date));
+    }
+    public void getConsultationsOnDate(){
+        System.out.println("\nEnter date: ");
+        String date = scanner.nextLine();
+        List<Consultation> consultations = consultationController.getConsultationsOnDate(date);
+        for(Consultation c : consultations){
+            System.out.println(c);
+        }
     }
 
 

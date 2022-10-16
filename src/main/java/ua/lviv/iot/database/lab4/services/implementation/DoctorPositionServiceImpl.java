@@ -45,7 +45,7 @@ public class DoctorPositionServiceImpl implements DoctorPositionService {
     }
 
     @Override
-    public List<Doctor> doctorsOnPosition(String positionName) {
+    public List<Doctor> getDoctorsOnPosition(String positionName) {
         return doctorPositionDao.doctorsOnPosition(positionName);
     }
 }

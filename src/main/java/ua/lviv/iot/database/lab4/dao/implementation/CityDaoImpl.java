@@ -33,15 +33,15 @@ public class CityDaoImpl implements CityDao {
 
     @Override
     public List<City> getAllCitiesFromRegionByRegionId(String regionId) {
-        return jdbcTemplate.queryForList(FIND_ALL_CITIES_FROM_REGION_BY_REGION_ID,
-                City.class,
+        return jdbcTemplate.query(FIND_ALL_CITIES_FROM_REGION_BY_REGION_ID,
+                new BeanPropertyRowMapper<>(City.class),
                 regionId);
     }
 
     @Override
     public List<City> getAllCitiesByName(String cityName) {
-        return jdbcTemplate.queryForList(FIND_ALL_CITIES_BY_NAME,
-                City.class,
+        return jdbcTemplate.query(FIND_ALL_CITIES_BY_NAME,
+                new BeanPropertyRowMapper<>(City.class),
                 "%" + cityName + "%");
     }
 
