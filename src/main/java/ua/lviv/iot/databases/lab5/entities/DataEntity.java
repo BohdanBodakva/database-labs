@@ -3,14 +3,15 @@ package ua.lviv.iot.databases.lab5.entities;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "data")
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class DataEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,5 +31,8 @@ public class DataEntity {
     private int heartRate;
 
     @Column(name = "specialNotes")
-    private int specialNotes;
+    private String specialNotes;
+
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "data")
+    private PatientEntity patient;
 }

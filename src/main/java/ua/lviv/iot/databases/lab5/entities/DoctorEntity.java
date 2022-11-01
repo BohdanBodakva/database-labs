@@ -15,7 +15,6 @@ import java.util.Objects;
 @Entity
 @Table(name = "doctor")
 @Data
-@NoArgsConstructor
 @RequiredArgsConstructor
 public class DoctorEntity {
     @Id

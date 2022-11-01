@@ -1,5 +1,9 @@
 package ua.lviv.iot.databases.lab5.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,7 +19,6 @@ import java.util.Objects;
 @Entity
 @Table(name = "patient")
 @Data
-@NoArgsConstructor
 @RequiredArgsConstructor
 public class PatientEntity {
     @Id
@@ -32,6 +35,7 @@ public class PatientEntity {
     @Column(name = "registration_date")
     private LocalDate regDate;
 
+//    @JsonManagedReference
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "hospital_id")
     private HospitalEntity hospital;
@@ -40,6 +44,7 @@ public class PatientEntity {
     @JoinColumn(name = "data_id")
     private DataEntity data;
 
+//    @JsonManagedReference
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE,
             CascadeType.REFRESH, CascadeType.DETACH})
     @JoinTable(

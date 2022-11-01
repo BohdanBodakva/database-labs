@@ -21,6 +21,6 @@ public class DoctorDto extends RepresentationModel<DoctorDto> {
     private String name;
     private int yearsOfExperience;
     private LocalDate hireDate;
-    private HospitalDto hospital;
+    private int hospital;
     private int salary;
 }

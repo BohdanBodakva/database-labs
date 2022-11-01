@@ -16,7 +16,7 @@ import ua.lviv.iot.databases.lab5.dto.PatientDto;
 @Relation(itemRelation = "", collectionRelation = "")
 public class PatientMedicineDto extends RepresentationModel<PatientMedicineDto> {
     private int id;
-    private PatientDto patient;
-    private MedicineDto medicine;
+    private int patient;
+    private String medicine;
     private String specialNotes;
 }

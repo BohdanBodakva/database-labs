@@ -8,6 +8,7 @@ import ua.lviv.iot.databases.lab5.exceptions.ResourceNotFoundException;
 import ua.lviv.iot.databases.lab5.repositories.CityRepository;
 import ua.lviv.iot.databases.lab5.services.CityService;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
@@ -36,11 +37,13 @@ public class CityServiceImpl implements CityService {
     }
 
     @Override
+    @Transactional
     public CityEntity create(CityEntity item) {
         return cityRepository.save(item);
     }
 
     @Override
+    @Transactional
     public CityEntity updateById(String s, CityEntity item) {
         CityEntity city = cityRepository.findById(s)
                 .orElseThrow(() -> new ResourceNotFoundException("City doesn't exist!"));
@@ -52,6 +55,7 @@ public class CityServiceImpl implements CityService {
     }
 
     @Override
+    @Transactional
     public void deleteById(String s) {
         cityRepository.findById(s)
                 .orElseThrow(() -> new ResourceNotFoundException("City doesn't exist!"));
@@ -60,6 +64,7 @@ public class CityServiceImpl implements CityService {
     }
 
     @Override
+    @Transactional
     public void deleteAll() {
         cityRepository.deleteAll();
     }

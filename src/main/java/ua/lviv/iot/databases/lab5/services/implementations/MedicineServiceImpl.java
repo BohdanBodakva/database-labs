@@ -8,6 +8,7 @@ import ua.lviv.iot.databases.lab5.exceptions.ResourceNotFoundException;
 import ua.lviv.iot.databases.lab5.repositories.MedicineRepository;
 import ua.lviv.iot.databases.lab5.services.MedicineService;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
@@ -31,11 +32,13 @@ public class MedicineServiceImpl implements MedicineService {
     }
 
     @Override
+    @Transactional
     public MedicineEntity create(MedicineEntity item) {
         return medicineRepository.save(item);
     }
 
     @Override
+    @Transactional
     public MedicineEntity updateById(String s, MedicineEntity item) {
         MedicineEntity medicine = medicineRepository.findById(s)
                 .orElseThrow(() -> new ResourceNotFoundException("Medicine doesn't exist!"));
@@ -46,11 +49,13 @@ public class MedicineServiceImpl implements MedicineService {
     }
 
     @Override
+    @Transactional
     public void deleteById(String s) {
         medicineRepository.deleteById(s);
     }
 
     @Override
+    @Transactional
     public void deleteAll() {
         medicineRepository.deleteAll();
     }

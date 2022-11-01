@@ -1,5 +1,6 @@
 package ua.lviv.iot.databases.lab5.entities;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,7 +14,6 @@ import java.util.Objects;
 @Entity
 @Table(name = "hospital")
 @Data
-@NoArgsConstructor
 @RequiredArgsConstructor
 public class HospitalEntity {
     @Id
@@ -31,6 +31,7 @@ public class HospitalEntity {
     @JoinColumn(name = "city_name")
     private CityEntity city;
 
+//    @JsonManagedReference
     @OneToMany(cascade = CascadeType.ALL,
             mappedBy = "hospital")
     private List<PatientEntity> patients = new ArrayList<>();

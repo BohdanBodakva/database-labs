@@ -6,4 +6,5 @@ import ua.lviv.iot.databases.lab5.entities.DataEntity;
 
 @Repository
 public interface DataRepository extends JpaRepository<DataEntity, Integer> {
+    DataEntity findDataEntityByPatientId(int patientId);
 }

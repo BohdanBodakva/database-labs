@@ -1,5 +1,6 @@
 package ua.lviv.iot.databases.lab5.entities.many_to_many;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,10 +20,12 @@ public class PatientMedicineEntity {
     @Column(name = "id")
     private int id;
 
+//    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "patient_id")
     private PatientEntity patient;
 
+//    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "medicine_name")
     private MedicineEntity medicine;

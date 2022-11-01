@@ -1,41 +1,51 @@
 package ua.lviv.iot.databases.lab5.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.web.bind.annotation.*;
+import ua.lviv.iot.databases.lab5.dto.DoctorDto;
+import ua.lviv.iot.databases.lab5.dto.WorkPositionDto;
+import ua.lviv.iot.databases.lab5.dto.assemblers.DoctorDtoAssembler;
+import ua.lviv.iot.databases.lab5.dto.assemblers.WorkPositionDtoAssembler;
 import ua.lviv.iot.databases.lab5.entities.WorkPositionEntity;
+import ua.lviv.iot.databases.lab5.services.DoctorService;
 import ua.lviv.iot.databases.lab5.services.WorkPositionService;
 
-import java.util.List;
-
 @RestController
-@RequestMapping("/api/databases/lab5/position")
+@RequestMapping("/api/databases/lab5/positions")
 public class WorkPositionController {
     private final WorkPositionService workPositionService;
+    private final DoctorService doctorService;
+    private final WorkPositionDtoAssembler workPositionDtoAssembler;
+    private final DoctorDtoAssembler doctorDtoAssembler;
 
     @Autowired
-    public WorkPositionController(WorkPositionService workPositionService) {
+    public WorkPositionController(WorkPositionService workPositionService, DoctorService doctorService, WorkPositionDtoAssembler workPositionDtoAssembler, DoctorDtoAssembler doctorDtoAssembler) {
         this.workPositionService = workPositionService;
+        this.doctorService = doctorService;
+        this.workPositionDtoAssembler = workPositionDtoAssembler;
+        this.doctorDtoAssembler = doctorDtoAssembler;
     }
 
     @GetMapping("/")
-    public List<WorkPositionEntity> getAllWorkPositions(){
-        return workPositionService.getAll();
+    public CollectionModel<WorkPositionDto> getAllWorkPositions(){
+        return workPositionDtoAssembler.toCollectionModel(workPositionService.getAll());
     }
 
     @GetMapping("/{id}")
-    public WorkPositionEntity getWorkPositionById(@PathVariable String id){
-        return workPositionService.getById(id);
+    public WorkPositionDto getWorkPositionById(@PathVariable String id){
+        return workPositionDtoAssembler.toModel(workPositionService.getById(id));
     }
 
     @PostMapping("/")
-    public WorkPositionEntity createWorkPosition(@RequestBody WorkPositionEntity workPosition){
-        return workPositionService.create(workPosition);
+    public WorkPositionDto createWorkPosition(@RequestBody WorkPositionEntity workPosition){
+        return workPositionDtoAssembler.toModel(workPositionService.create(workPosition));
     }
 
-    @PutMapping("/{id}")
-    public WorkPositionEntity updateWorkPosition(@PathVariable String id, @RequestBody WorkPositionEntity workPosition){
-        return workPositionService.updateById(id, workPosition);
-    }
+//    @PutMapping("/{id}")
+//    public WorkPositionEntity updateWorkPosition(@PathVariable String id, @RequestBody WorkPositionEntity workPosition){
+//        return workPositionService.updateById(id, workPosition);
+//    }
 
     @DeleteMapping("/{id}")
     public void deleteWorkPosition(@PathVariable String id){
@@ -47,8 +57,10 @@ public class WorkPositionController {
         workPositionService.deleteAll();
     }
 
-    @GetMapping("/doctors/{id}/positions")
-    public List<WorkPositionEntity> getAllPositionsByDoctorId(@PathVariable int id){
-        return workPositionService.getWorkPositionEntitiesByDoctorsId(id);
+    @GetMapping("/{id}/doctors")
+    public CollectionModel<DoctorDto> getDoctorEntitiesByPositionsName(@PathVariable String id){
+        return doctorDtoAssembler.toCollectionModel(doctorService.getDoctorEntitiesByPositionsName(id));
     }
+
+
 }

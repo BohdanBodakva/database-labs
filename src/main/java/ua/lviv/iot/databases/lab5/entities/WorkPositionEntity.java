@@ -11,7 +11,6 @@ import java.util.List;
 @Entity
 @Table(name = "work_position")
 @Data
-@NoArgsConstructor
 @RequiredArgsConstructor
 public class WorkPositionEntity {
     @Id

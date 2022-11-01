@@ -14,5 +14,5 @@ import org.springframework.hateoas.server.core.Relation;
 @Relation(itemRelation = "", collectionRelation = "")
 public class CityDto extends RepresentationModel<CityDto> {
     private String name;
-    private RegionDto region;
+    private String region;
 }

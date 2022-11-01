@@ -7,6 +7,7 @@ import ua.lviv.iot.databases.lab5.exceptions.ResourceNotFoundException;
 import ua.lviv.iot.databases.lab5.repositories.DiagnosisRepository;
 import ua.lviv.iot.databases.lab5.services.DiagnosisService;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
@@ -35,11 +36,13 @@ public class DiagnosisServiceImpl implements DiagnosisService {
     }
 
     @Override
+    @Transactional
     public DiagnosisEntity create(DiagnosisEntity item) {
         return diagnosisRepository.save(item);
     }
 
     @Override
+    @Transactional
     public DiagnosisEntity updateById(String s, DiagnosisEntity item) {
         DiagnosisEntity diagnosis = diagnosisRepository.findById(s)
                 .orElseThrow(() -> new ResourceNotFoundException("Diagnosis doesn't exist!"));
@@ -50,6 +53,7 @@ public class DiagnosisServiceImpl implements DiagnosisService {
     }
 
     @Override
+    @Transactional
     public void deleteById(String s) {
         diagnosisRepository.findById(s)
                 .orElseThrow(() -> new ResourceNotFoundException("Diagnosis doesn't exist!"));
@@ -58,6 +62,7 @@ public class DiagnosisServiceImpl implements DiagnosisService {
     }
 
     @Override
+    @Transactional
     public void deleteAll() {
         diagnosisRepository.deleteAll();
     }

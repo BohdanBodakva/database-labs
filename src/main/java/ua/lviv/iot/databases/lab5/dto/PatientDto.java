@@ -19,6 +19,6 @@ public class PatientDto extends RepresentationModel<PatientDto> {
     private String surname;
     private String name;
     private LocalDate registrationDate;
-    private HospitalDto hospital;
-    private DataDto data;
+    private int hospital;
+    private int data;
 }

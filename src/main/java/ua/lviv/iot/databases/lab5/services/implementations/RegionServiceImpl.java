@@ -7,6 +7,7 @@ import ua.lviv.iot.databases.lab5.exceptions.ResourceNotFoundException;
 import ua.lviv.iot.databases.lab5.repositories.RegionRepository;
 import ua.lviv.iot.databases.lab5.services.RegionService;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
@@ -30,11 +31,13 @@ public class RegionServiceImpl implements RegionService {
     }
 
     @Override
+    @Transactional
     public RegionEntity create(RegionEntity item) {
         return regionRepository.save(item);
     }
 
     @Override
+    @Transactional
     public RegionEntity updateById(String s, RegionEntity item) {
         RegionEntity region = regionRepository.findById(s)
                 .orElseThrow(() -> new ResourceNotFoundException("Region doesn't exist!"));
@@ -45,6 +48,7 @@ public class RegionServiceImpl implements RegionService {
     }
 
     @Override
+    @Transactional
     public void deleteById(String s) {
         regionRepository.findById(s)
                 .orElseThrow(() -> new ResourceNotFoundException("Region doesn't exist!"));
@@ -53,6 +57,7 @@ public class RegionServiceImpl implements RegionService {
     }
 
     @Override
+    @Transactional
     public void deleteAll() {
         regionRepository.deleteAll();
     }

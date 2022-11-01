@@ -8,6 +8,7 @@ import ua.lviv.iot.databases.lab5.repositories.WorkPositionRepository;
 import ua.lviv.iot.databases.lab5.services.GeneralService;
 import ua.lviv.iot.databases.lab5.services.WorkPositionService;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
@@ -31,11 +32,13 @@ public class WorkPositionServiceImpl implements WorkPositionService {
     }
 
     @Override
+    @Transactional
     public WorkPositionEntity create(WorkPositionEntity item) {
         return workPositionRepository.save(item);
     }
 
     @Override
+    @Transactional
     public WorkPositionEntity updateById(String s, WorkPositionEntity item) {
         WorkPositionEntity position = workPositionRepository.findById(s)
                 .orElseThrow(() -> new ResourceNotFoundException("Position doesn't exist!"));
@@ -46,6 +49,7 @@ public class WorkPositionServiceImpl implements WorkPositionService {
     }
 
     @Override
+    @Transactional
     public void deleteById(String s) {
         workPositionRepository.findById(s)
                 .orElseThrow(() -> new ResourceNotFoundException("Position doesn't exist!"));
@@ -54,6 +58,7 @@ public class WorkPositionServiceImpl implements WorkPositionService {
     }
 
     @Override
+    @Transactional
     public void deleteAll() {
         workPositionRepository.deleteAll();
     }

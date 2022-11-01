@@ -6,6 +6,6 @@ import ua.lviv.iot.databases.lab5.services.GeneralService;
 import java.util.List;
 
 public interface ConsultationService extends GeneralService<ConsultationEntity, Integer> {
-    List<ConsultationEntity> findConsultationEntitiesByPatientId(int patientId);
-    List<ConsultationEntity> findConsultationEntitiesByDoctorId(int doctorId);
+    List<ConsultationEntity> getConsultationEntitiesByPatientId(int patientId);
+    List<ConsultationEntity> getConsultationEntitiesByDoctorId(int doctorId);
 }

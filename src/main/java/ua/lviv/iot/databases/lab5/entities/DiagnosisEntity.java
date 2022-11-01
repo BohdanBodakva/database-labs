@@ -1,8 +1,10 @@
 package ua.lviv.iot.databases.lab5.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 import javax.persistence.*;
 import java.util.List;
@@ -10,12 +12,13 @@ import java.util.List;
 @Entity
 @Table(name = "diagnosis")
 @Data
-@NoArgsConstructor
+@RequiredArgsConstructor
 public class DiagnosisEntity {
     @Id
     @Column(name = "name")
     private String name;
 
+//    @JsonBackReference
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE,
             CascadeType.REFRESH, CascadeType.DETACH}, mappedBy = "diagnoses")
     private List<PatientEntity> patients;
