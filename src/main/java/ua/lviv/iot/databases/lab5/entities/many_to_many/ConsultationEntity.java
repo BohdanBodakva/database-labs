@@ -3,6 +3,7 @@ package ua.lviv.iot.databases.lab5.entities.many_to_many;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import ua.lviv.iot.databases.lab5.entities.DoctorEntity;
 import ua.lviv.iot.databases.lab5.entities.PatientEntity;
 
@@ -12,8 +13,7 @@ import java.time.LocalDate;
 @Entity
 @Table(name = "consultation")
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class ConsultationEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

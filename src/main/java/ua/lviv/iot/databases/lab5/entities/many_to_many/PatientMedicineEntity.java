@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import ua.lviv.iot.databases.lab5.entities.MedicineEntity;
 import ua.lviv.iot.databases.lab5.entities.PatientEntity;
 
@@ -12,8 +13,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "patient_medicine")
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class PatientMedicineEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

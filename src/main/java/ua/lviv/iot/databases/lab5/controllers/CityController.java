@@ -13,7 +13,7 @@ import ua.lviv.iot.databases.lab5.services.CityService;
 import ua.lviv.iot.databases.lab5.services.HospitalService;
 
 @RestController
-@RequestMapping("api/databases/lab5/cities")
+@RequestMapping("/api/databases/lab5/cities")
 public class CityController {
     private final CityService cityService;
     private final HospitalService hospitalService;
