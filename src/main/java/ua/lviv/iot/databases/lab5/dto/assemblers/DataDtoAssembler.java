@@ -26,7 +26,6 @@ public class DataDtoAssembler implements RepresentationModelAssembler<DataEntity
                 .systolicPressure(entity.getDiastPressure())
                 .systolicPressure(entity.getSystPressure())
                 .heartRate(entity.getHeartRate())
-                .patient(entity.getPatient().getId())
                 .specialNotes(entity.getSpecialNotes())
                 .build();
 

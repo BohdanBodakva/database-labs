@@ -19,8 +19,7 @@ public class DiagnosisEntity {
     private String name;
 
 //    @JsonBackReference
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE,
-            CascadeType.REFRESH, CascadeType.DETACH}, mappedBy = "diagnoses")
+    @ManyToMany(mappedBy = "diagnoses")
     private List<PatientEntity> patients;
 
     public DiagnosisEntity(String name) {

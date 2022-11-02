@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import ua.lviv.iot.databases.lab5.entities.DiagnosisEntity;
 import ua.lviv.iot.databases.lab5.exceptions.ResourceNotFoundException;
 import ua.lviv.iot.databases.lab5.repositories.DiagnosisRepository;
+import ua.lviv.iot.databases.lab5.repositories.PatientRepository;
 import ua.lviv.iot.databases.lab5.services.DiagnosisService;
 
 import javax.transaction.Transactional;
@@ -13,14 +14,19 @@ import java.util.List;
 @Service
 public class DiagnosisServiceImpl implements DiagnosisService {
     private final DiagnosisRepository diagnosisRepository;
+    private final PatientRepository patientRepository;
 
     @Autowired
-    public DiagnosisServiceImpl(DiagnosisRepository diagnosisRepository) {
+    public DiagnosisServiceImpl(DiagnosisRepository diagnosisRepository, PatientRepository patientRepository) {
         this.diagnosisRepository = diagnosisRepository;
+        this.patientRepository = patientRepository;
     }
 
     @Override
     public List<DiagnosisEntity> getDiagnosisEntitiesByPatientsId(int patientId) {
+        patientRepository.findById(patientId)
+                .orElseThrow(() -> new ResourceNotFoundException("Patient doesn't exist!"));
+
        return diagnosisRepository.findDiagnosisEntitiesByPatientsId(patientId);
     }
 

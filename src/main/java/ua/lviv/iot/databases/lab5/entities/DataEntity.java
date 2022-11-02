@@ -33,6 +33,6 @@ public class DataEntity {
     @Column(name = "specialNotes")
     private String specialNotes;
 
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "data")
+    @OneToOne(mappedBy = "data")
     private PatientEntity patient;
 }

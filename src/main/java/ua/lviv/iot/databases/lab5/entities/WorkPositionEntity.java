@@ -17,8 +17,7 @@ public class WorkPositionEntity {
     @Column(name = "name")
     private String name;
 
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE,
-            CascadeType.REFRESH, CascadeType.DETACH}, mappedBy = "positions")
+    @ManyToMany(mappedBy = "positions")
     @JsonIgnore
     private List<DoctorEntity> doctors;
 }

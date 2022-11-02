@@ -17,7 +17,7 @@ public class CityEntity {
     @Column(name = "name")
     private String name;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "region_name")
     private RegionEntity region;
 }

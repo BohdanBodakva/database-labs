@@ -136,55 +136,55 @@ create table work_position (
 -- Add foreign keys
 -- Reference: city_region (table: city)
 alter table city add constraint city_region foreign key city_region (region_name)
-    references region (`name`);
+    references region (`name`) on update cascade on delete cascade;
 
 -- Reference: consultation_doctor (table: consultation)
 alter table consultation add constraint consultation_doctor foreign key consultation_doctor (doctor_id)
-    references doctor (id);
+    references doctor (id) on update cascade on delete cascade;
 
 -- Reference: consultation_patient (table: consultation)
 alter table consultation add constraint consultation_patient foreign key consultation_patient (patient_id)
-    references patient (id);
+    references patient (id) on update cascade on delete cascade;
 
 -- Reference: doctor_hospital (table: doctor)
 alter table doctor add constraint doctor_hospital foreign key doctor_hospital (hospital_id)
-    references hospital (id);
+    references hospital (id) on update cascade on delete cascade;
 
 -- Reference: doctor_position_doctor (table: doctor_position)
 alter table doctor_position add constraint doctor_position_doctor foreign key doctor_position_doctor (doctor_id)
-    references doctor (id);
+    references doctor (id) on update cascade on delete cascade;
 
 -- Reference: doctor_position_position (table: doctor_position)
 alter table doctor_position add constraint doctor_position_position foreign key doctor_position_position (position_name)
-    references work_position (name);
+    references work_position (name) on update cascade on delete cascade;
 
 -- Reference: hospital_city (table: hospital)
 alter table hospital add constraint hospital_city foreign key hospital_city (city_name)
-    references city (`name`);
+    references city (`name`) on update cascade on delete cascade;
 
 -- Reference: patient_data (table: patient)
 alter table patient add constraint patient_data foreign key patient_data (data_id)
-    references `data` (id);
+    references `data` (id) on update cascade on delete cascade;
 
 -- Reference: patient_diagnosis_diagnosis (table: patient_diagnosis)
 alter table patient_diagnosis add constraint patient_diagnosis_diagnosis foreign key patient_diagnosis_diagnosis (diagnosis_name)
-    references diagnosis (`name`);
+    references diagnosis (`name`) on update cascade on delete cascade;
 
 -- Reference: patient_diagnosis_patient (table: patient_diagnosis)
 alter table patient_diagnosis add constraint patient_diagnosis_patient foreign key patient_diagnosis_patient (patient_id)
-    references patient (id);
+    references patient (id) on update cascade on delete cascade;
 
 -- Reference: patient_hospital (table: patient)
 alter table patient add constraint patient_hospital foreign key patient_hospital (hospital_id)
-    references hospital (id);
+    references hospital (id) on update cascade on delete cascade;
 
 -- Reference: patient_medicine_medicine (table: patient_medicine)
 alter table patient_medicine add constraint patient_medicine_medicine foreign key patient_medicine_medicine (medicine_name)
-    references medicine (`name`);
+    references medicine (`name`) on update cascade on delete cascade;
 
 -- Reference: patient_medicine_patient (table: patient_medicine)
 alter table patient_medicine add constraint patient_medicine_patient foreign key patient_medicine_patient (patient_id)
-    references patient (id);           
+    references patient (id) on update cascade on delete cascade;           
     
     
     

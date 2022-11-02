@@ -51,6 +51,9 @@ public class MedicineServiceImpl implements MedicineService {
     @Override
     @Transactional
     public void deleteById(String s) {
+        medicineRepository.findById(s)
+                .orElseThrow(() -> new ResourceNotFoundException("Medicine doesn't exist!"));
+
         medicineRepository.deleteById(s);
     }
 

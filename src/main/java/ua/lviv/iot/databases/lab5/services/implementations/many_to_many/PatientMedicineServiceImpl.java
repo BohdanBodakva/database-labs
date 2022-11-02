@@ -2,9 +2,10 @@ package ua.lviv.iot.databases.lab5.services.implementations.many_to_many;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ua.lviv.iot.databases.lab5.entities.DataEntity;
 import ua.lviv.iot.databases.lab5.entities.many_to_many.PatientMedicineEntity;
 import ua.lviv.iot.databases.lab5.exceptions.ResourceNotFoundException;
+import ua.lviv.iot.databases.lab5.repositories.MedicineRepository;
+import ua.lviv.iot.databases.lab5.repositories.PatientRepository;
 import ua.lviv.iot.databases.lab5.repositories.many_to_many.PatientMedicineRepository;
 import ua.lviv.iot.databases.lab5.services.many_to_many.PatientMedicineService;
 
@@ -14,10 +15,14 @@ import java.util.List;
 @Service
 public class PatientMedicineServiceImpl implements PatientMedicineService {
     private final PatientMedicineRepository patientMedicineRepository;
+    private final PatientRepository patientRepository;
+    private final MedicineRepository medicineRepository;
 
     @Autowired
-    public PatientMedicineServiceImpl(PatientMedicineRepository patientMedicineRepository) {
+    public PatientMedicineServiceImpl(PatientMedicineRepository patientMedicineRepository, PatientRepository patientRepository, MedicineRepository medicineRepository) {
         this.patientMedicineRepository = patientMedicineRepository;
+        this.patientRepository = patientRepository;
+        this.medicineRepository = medicineRepository;
     }
 
     @Override
@@ -67,11 +72,17 @@ public class PatientMedicineServiceImpl implements PatientMedicineService {
 
     @Override
     public List<PatientMedicineEntity> getPatientMedicineEntitiesByPatientId(int patientId) {
+        patientRepository.findById(patientId)
+                .orElseThrow(() -> new ResourceNotFoundException("Patient doesn't exist!"));
+
         return patientMedicineRepository.findPatientMedicineEntitiesByPatientId(patientId);
     }
 
     @Override
     public List<PatientMedicineEntity> getPatientMedicineEntitiesByMedicineName(String medicineName) {
+        medicineRepository.findById(medicineName)
+                .orElseThrow(() -> new ResourceNotFoundException("Medicine doesn't exist!"));
+
         return patientMedicineRepository.findPatientMedicineEntitiesByMedicineName(medicineName);
     }
 }

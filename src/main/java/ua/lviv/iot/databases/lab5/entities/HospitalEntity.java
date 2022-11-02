@@ -27,42 +27,13 @@ public class HospitalEntity {
     @Column(name = "address")
     private String address;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "city_name")
     private CityEntity city;
 
-//    @JsonManagedReference
-    @OneToMany(cascade = CascadeType.ALL,
-            mappedBy = "hospital")
+    @OneToMany(mappedBy = "hospital")
     private List<PatientEntity> patients = new ArrayList<>();
 
-    @OneToMany(cascade = CascadeType.ALL,
-            mappedBy = "hospital")
+    @OneToMany(mappedBy = "hospital")
     private List<DoctorEntity> doctors = new ArrayList<>();
-
-    public void addPatient(PatientEntity patient){
-        patients.add(patient);
-        patient.setHospital(this);
-    }
-
-    public void deletePatient(int patientId){
-        PatientEntity patient = this.patients.stream().filter(p -> Objects.equals(p.getId(), patientId))
-                .findFirst().orElse(null);
-        if (patient != null) {
-            this.patients.remove(patient);
-        }
-    }
-
-    public void addDoctor(DoctorEntity doctor){
-        doctors.add(doctor);
-        doctor.setHospital(this);
-    }
-
-    public void deleteDoctor(int doctorId){
-        DoctorEntity doctor = this.doctors.stream().filter(p -> Objects.equals(p.getId(), doctorId))
-                .findFirst().orElse(null);
-        if (doctor != null) {
-            this.doctors.remove(doctor);
-        }
-    }
 }

@@ -4,8 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ua.lviv.iot.databases.lab5.entities.WorkPositionEntity;
 import ua.lviv.iot.databases.lab5.exceptions.ResourceNotFoundException;
+import ua.lviv.iot.databases.lab5.repositories.DoctorRepository;
 import ua.lviv.iot.databases.lab5.repositories.WorkPositionRepository;
-import ua.lviv.iot.databases.lab5.services.GeneralService;
 import ua.lviv.iot.databases.lab5.services.WorkPositionService;
 
 import javax.transaction.Transactional;
@@ -14,10 +14,12 @@ import java.util.List;
 @Service
 public class WorkPositionServiceImpl implements WorkPositionService {
     private final WorkPositionRepository workPositionRepository;
+    private final DoctorRepository doctorRepository;
 
     @Autowired
-    public WorkPositionServiceImpl(WorkPositionRepository workPositionRepository) {
+    public WorkPositionServiceImpl(WorkPositionRepository workPositionRepository, DoctorRepository doctorRepository) {
         this.workPositionRepository = workPositionRepository;
+        this.doctorRepository = doctorRepository;
     }
 
     @Override
@@ -65,6 +67,9 @@ public class WorkPositionServiceImpl implements WorkPositionService {
 
     @Override
     public List<WorkPositionEntity> getWorkPositionEntitiesByDoctorsId(int doctorId) {
+        doctorRepository.findById(doctorId)
+                .orElseThrow(() -> new ResourceNotFoundException("Doctor doesn't exist!"));
+
         return workPositionRepository.findWorkPositionEntitiesByDoctorsId((doctorId));
     }
 }

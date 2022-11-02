@@ -3,9 +3,9 @@ package ua.lviv.iot.databases.lab5.services.implementations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ua.lviv.iot.databases.lab5.entities.DataEntity;
-import ua.lviv.iot.databases.lab5.entities.DiagnosisEntity;
 import ua.lviv.iot.databases.lab5.exceptions.ResourceNotFoundException;
 import ua.lviv.iot.databases.lab5.repositories.DataRepository;
+import ua.lviv.iot.databases.lab5.repositories.PatientRepository;
 import ua.lviv.iot.databases.lab5.services.DataService;
 
 import javax.transaction.Transactional;
@@ -14,10 +14,12 @@ import java.util.List;
 @Service
 public class DataServiceImpl implements DataService {
     private final DataRepository dataRepository;
+    private final PatientRepository patientRepository;
 
     @Autowired
-    public DataServiceImpl(DataRepository dataRepository) {
+    public DataServiceImpl(DataRepository dataRepository, PatientRepository patientRepository) {
         this.dataRepository = dataRepository;
+        this.patientRepository = patientRepository;
     }
 
     @Override
@@ -66,6 +68,9 @@ public class DataServiceImpl implements DataService {
 
     @Override
     public DataEntity getDataEntityByPatientId(int patientId) {
+        patientRepository.findById(patientId)
+                .orElseThrow(() -> new ResourceNotFoundException("Patient doesn't exist!"));
+
         return dataRepository.findDataEntityByPatientId(patientId);
     }
 }

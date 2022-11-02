@@ -37,31 +37,15 @@ public class DoctorEntity {
     @Column(name = "salary_in_hrn")
     private int salary;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "hospital_id")
     private HospitalEntity hospital;
 
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE,
-            CascadeType.REFRESH, CascadeType.DETACH})
+    @ManyToMany
     @JoinTable(
             name = "doctor_position",
             joinColumns = @JoinColumn(name = "doctor_id"),
             inverseJoinColumns = @JoinColumn(name = "position_name")
     )
     private List<WorkPositionEntity> positions;
-
-    public void addPosition(WorkPositionEntity workPosition) {
-        this.positions.add(workPosition);
-        workPosition.getDoctors().add(this);
-    }
-
-    public void removePosition(String positionId) {
-        WorkPositionEntity position = this.positions.stream().filter(p -> Objects.equals(p.getName(), positionId))
-                .findFirst().orElse(null);
-        if (position != null) {
-            this.positions.remove(position);
-            position.getDoctors().remove(this);
-        }
-    }
-
 }

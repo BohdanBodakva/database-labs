@@ -3,8 +3,8 @@ package ua.lviv.iot.databases.lab5.services.implementations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ua.lviv.iot.databases.lab5.entities.HospitalEntity;
-import ua.lviv.iot.databases.lab5.entities.MedicineEntity;
 import ua.lviv.iot.databases.lab5.exceptions.ResourceNotFoundException;
+import ua.lviv.iot.databases.lab5.repositories.CityRepository;
 import ua.lviv.iot.databases.lab5.repositories.HospitalRepository;
 import ua.lviv.iot.databases.lab5.services.HospitalService;
 
@@ -14,10 +14,12 @@ import java.util.List;
 @Service
 public class HospitalServiceImpl implements HospitalService {
     private final HospitalRepository hospitalRepository;
+    private final CityRepository cityRepository;
 
     @Autowired
-    public HospitalServiceImpl(HospitalRepository hospitalRepository) {
+    public HospitalServiceImpl(HospitalRepository hospitalRepository, CityRepository cityRepository) {
         this.hospitalRepository = hospitalRepository;
+        this.cityRepository = cityRepository;
     }
 
     @Override
@@ -67,6 +69,9 @@ public class HospitalServiceImpl implements HospitalService {
 
     @Override
     public List<HospitalEntity> getHospitalEntitiesByCityName(String cityName) {
+        cityRepository.findById(cityName)
+                .orElseThrow(() -> new ResourceNotFoundException("City doesn't exist!"));
+
         return hospitalRepository.findHospitalEntitiesByCityName(cityName);
     }
 }

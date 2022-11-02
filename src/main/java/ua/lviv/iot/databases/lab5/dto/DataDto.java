@@ -19,5 +19,4 @@ public class DataDto extends RepresentationModel<DataDto> {
     private int diastolicPressure;
     private int heartRate;
     private String specialNotes;
-    private int patient;
 }

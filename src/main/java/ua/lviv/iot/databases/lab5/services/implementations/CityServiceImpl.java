@@ -3,9 +3,9 @@ package ua.lviv.iot.databases.lab5.services.implementations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ua.lviv.iot.databases.lab5.entities.CityEntity;
-import ua.lviv.iot.databases.lab5.entities.DiagnosisEntity;
 import ua.lviv.iot.databases.lab5.exceptions.ResourceNotFoundException;
 import ua.lviv.iot.databases.lab5.repositories.CityRepository;
+import ua.lviv.iot.databases.lab5.repositories.RegionRepository;
 import ua.lviv.iot.databases.lab5.services.CityService;
 
 import javax.transaction.Transactional;
@@ -14,14 +14,19 @@ import java.util.List;
 @Service
 public class CityServiceImpl implements CityService {
     private final CityRepository cityRepository;
+    private final RegionRepository regionRepository;
 
     @Autowired
-    public CityServiceImpl(CityRepository cityRepository) {
+    public CityServiceImpl(CityRepository cityRepository, RegionRepository regionRepository) {
         this.cityRepository = cityRepository;
+        this.regionRepository = regionRepository;
     }
 
     @Override
     public List<CityEntity> getCityEntitiesByRegionName(String regionName) {
+        regionRepository.findById(regionName)
+                .orElseThrow(() -> new ResourceNotFoundException("Region doesn't exist!"));
+
         return cityRepository.findCityEntitiesByRegionName(regionName);
     }
 

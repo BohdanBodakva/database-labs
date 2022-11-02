@@ -2,10 +2,11 @@ package ua.lviv.iot.databases.lab5.services.implementations;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ua.lviv.iot.databases.lab5.entities.DiagnosisEntity;
 import ua.lviv.iot.databases.lab5.entities.DoctorEntity;
 import ua.lviv.iot.databases.lab5.exceptions.ResourceNotFoundException;
 import ua.lviv.iot.databases.lab5.repositories.DoctorRepository;
+import ua.lviv.iot.databases.lab5.repositories.HospitalRepository;
+import ua.lviv.iot.databases.lab5.repositories.WorkPositionRepository;
 import ua.lviv.iot.databases.lab5.services.DoctorService;
 
 import javax.transaction.Transactional;
@@ -14,19 +15,29 @@ import java.util.List;
 @Service
 public class DoctorServiceImpl implements DoctorService {
     private final DoctorRepository doctorRepository;
+    private final WorkPositionRepository workPositionRepository;
+    private final HospitalRepository hospitalRepository;
 
     @Autowired
-    public DoctorServiceImpl(DoctorRepository doctorRepository) {
+    public DoctorServiceImpl(DoctorRepository doctorRepository, WorkPositionRepository workPositionRepository, HospitalRepository hospitalRepository) {
         this.doctorRepository = doctorRepository;
+        this.workPositionRepository = workPositionRepository;
+        this.hospitalRepository = hospitalRepository;
     }
 
     @Override
     public List<DoctorEntity> getDoctorEntitiesByPositionsName(String positionId) {
+        workPositionRepository.findById(positionId)
+                .orElseThrow(() -> new ResourceNotFoundException("Position doesn't exist!"));
+
         return doctorRepository.findDoctorEntitiesByPositionsName(positionId);
     }
 
     @Override
     public List<DoctorEntity> getDoctorEntitiesByHospitalId(int hospitalId) {
+        hospitalRepository.findById(hospitalId)
+                .orElseThrow(() -> new ResourceNotFoundException("Hospital doesn't exist!"));
+
         return doctorRepository.findDoctorEntitiesByHospitalId(hospitalId);
     }
 

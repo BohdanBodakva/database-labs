@@ -35,8 +35,7 @@ public class PatientEntity {
     @Column(name = "registration_date")
     private LocalDate regDate;
 
-//    @JsonManagedReference
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "hospital_id")
     private HospitalEntity hospital;
 
@@ -44,27 +43,11 @@ public class PatientEntity {
     @JoinColumn(name = "data_id")
     private DataEntity data;
 
-//    @JsonManagedReference
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE,
-            CascadeType.REFRESH, CascadeType.DETACH})
+    @ManyToMany
     @JoinTable(
             name = "patient_diagnosis",
             joinColumns = @JoinColumn(name = "patient_id"),
             inverseJoinColumns = @JoinColumn(name = "diagnosis_name")
     )
     private List<DiagnosisEntity> diagnoses;
-
-    public void addDiagnosis(DiagnosisEntity diagnosis) {
-        this.diagnoses.add(diagnosis);
-        diagnosis.getPatients().add(this);
-    }
-
-    public void removeDiagnosis(String diagnosisId) {
-        DiagnosisEntity diagnosis = this.diagnoses.stream().filter(p -> Objects.equals(p.getName(), diagnosisId))
-                .findFirst().orElse(null);
-        if (diagnosis != null) {
-            this.diagnoses.remove(diagnosis);
-            diagnosis.getPatients().remove(this);
-        }
-    }
 }
